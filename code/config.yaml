@@ -1,0 +1,8 @@
+path: /Users/alberto/ROBOTICS/personal_dataset/autovelox/data    # directory path containing the folder images and labels
+train: images/train
+val: images/train           # validation dataset --> could be the same as the train to have a simple training
+
+# Set classes for training the model for all this classes
+names:
+  0: autovelox 
+  1: controllo_velocita 
