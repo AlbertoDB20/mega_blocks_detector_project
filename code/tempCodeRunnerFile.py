@@ -1,0 +1,1 @@
+Resize(height=int(reduce * 

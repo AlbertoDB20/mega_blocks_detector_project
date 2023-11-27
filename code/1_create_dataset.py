@@ -27,7 +27,7 @@ import random
 import shutil
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
-path_to_project_folder = "/Users/alberto/ROBOTICS/test_scrips"
+path_to_project_folder = "/Users/alberto/ROBOTICS/test_scrips"              #       <---------      MODIFY HERE
 
 # DO NOT MODIFY THESE
 path_to_data_folder = path_to_project_folder + "/data"
@@ -57,6 +57,10 @@ percentage_train = 0.6
 percentage_val = 0.2
 percentage_test = 0.2
 
+# Put True or False in this flags, according to your code
+DO_YOU_HAVE_MOV_VIDEO_TO_CONVERT = True
+DO_YOU_HAVE_MP4_VIDEO_TO_FRAME = True
+DO_YOU_WANT_TO_SPLIT_IMAGES_IN_THREE_SUBDATASETS_TRAIN_VAL_TEST = True
 
 
 # I create the folder
@@ -257,18 +261,20 @@ def split_images(images_directory, train_directory, validation_directory, test_d
 
 def main():
     # I first convert all the .MOV video in .mp4 format 
-    convert_mov_to_mp4(path_to_videos_MOV_folder, path_to_videos_MP4_folder)
+    if DO_YOU_HAVE_MOV_VIDEO_TO_CONVERT:
+        convert_mov_to_mp4(path_to_videos_MOV_folder, path_to_videos_MP4_folder)
 
+    if DO_YOU_HAVE_MP4_VIDEO_TO_FRAME:
+        # then I take all the .mp4 video and I frame it, saving .jpg frames in image folder 
+        for root, dirs, files in os.walk(path_to_videos_MP4_folder):
+            for vid in files:
+                video_path = path_to_videos_MP4_folder + "/" + vid
+                frammenta_video(video_path, path_to_images_folder, vid)
 
-    # then I take all the .mp4 video and I frame it, saving .jpg frames in image folder 
-    for root, dirs, files in os.walk(path_to_videos_MP4_folder):
-        for vid in files:
-            video_path = path_to_videos_MP4_folder + "/" + vid
-            frammenta_video(video_path, path_to_images_folder, vid)
-
-    # Now it is time to create the datasets, now I have to arrange the image in images into the three folders
-    print("\n\n\nDIVIDE IMAGES INTO SUB FOLDER\n\n")
-    split_images(path_to_images_folder, path_to_images_train_folder, path_to_images_val_folder, path_to_images_test_folder, percentage_train, percentage_val, percentage_test)
+    if DO_YOU_WANT_TO_SPLIT_IMAGES_IN_THREE_SUBDATASETS_TRAIN_VAL_TEST:
+        # Now it is time to create the datasets, now I have to arrange the image in images into the three folders
+        print("\n\n\nDIVIDE IMAGES INTO SUB FOLDER\n\n")
+        split_images(path_to_images_folder, path_to_images_train_folder, path_to_images_val_folder, path_to_images_test_folder, percentage_train, percentage_val, percentage_test)
     
     print("\n\n\nFINISHED\n\n")
 
