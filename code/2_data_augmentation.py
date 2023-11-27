@@ -23,6 +23,36 @@ import numpy as np
 import shutil
 
 
+# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
+path_to_project_folder = "/Users/alberto/ROBOTICS/test_scrips"              #       <---------      MODIFY HERE
+
+# DO NOT MODIFY THESE
+path_to_data_folder = path_to_project_folder + "/data"
+path_to_code_folder = path_to_project_folder + "/code"
+
+path_to_images_folder = path_to_data_folder + "/images"
+path_to_labels_folder = path_to_data_folder + "/labels"
+path_to_videos_folder = path_to_data_folder + "/videos"
+
+path_to_images_train_folder = path_to_images_folder + "/train"
+path_to_images_val_folder = path_to_images_folder + "/val"
+path_to_images_test_folder = path_to_images_folder + "/test"
+
+path_to_labels_train_folder = path_to_labels_folder + "/train"
+path_to_labels_val_folder = path_to_labels_folder + "/val"
+path_to_labels_test_folder = path_to_labels_folder + "/test"
+
+path_to_videos_MOV_folder = path_to_videos_folder + "/videos_MOV"
+path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
+
+
+
+# Example usage with 60% reduction in dimensions
+output_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/aug_train"
+output_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/aug_train"
+reduce = 0.6
+
+
 def load_annotations(annotation_directory, image_file):
     annotation_file = os.path.join(annotation_directory, f"{os.path.splitext(image_file)[0]}.txt")
 
@@ -179,11 +209,7 @@ def augment_images_custom(input_image_directory, output_image_directory, input_a
     print("Custom data augmentation with annotations using Albumentations completed.")
 
 
+#######################################################    MAIN    #######################################################################
 
-# Example usage with 70% reduction in dimensions
-input_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/train"
-output_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/aug_train"
-input_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/train"
-output_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/aug_train"
-augment_images_custom(input_image_directory, output_image_directory, input_annotation_directory, output_annotation_directory, reduce=0.6)
+augment_images_custom(path_to_images_train_folder, output_image_directory, path_to_labels_train_folder, output_annotation_directory, reduce)
 
