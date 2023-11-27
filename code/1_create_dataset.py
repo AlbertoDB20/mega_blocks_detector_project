@@ -1,5 +1,4 @@
 '''
-
     FUNZIONA!!
     
         PYTHON SCRIPT FOR CREATING DATASETS.
@@ -23,7 +22,6 @@ import os
 from moviepy.editor import *
 from tqdm import tqdm
 import cv2
-import time
 import sys
 import random
 import shutil
