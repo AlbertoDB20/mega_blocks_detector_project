@@ -2,14 +2,15 @@ WAY TO CREATE DATASETS:
 
 N.B.: you have to adapt bash 
 
-1) Modify in create_all_project_folder.py the path_to_project_folder, according to your system, then compile this scripts.
+1) Modify in 0_create_all_project_folder.py the path_to_project_folder, according to your system, then compile this scripts.
 
             cd path_to_python_script
 
-2) Save all your .MOV video into the path_to_videos_MOV_folder renaming videos as yuo want. I really suggest to rename it such as "img001.MOV" even if they are not img. 
+2) Save all your .MOV video into the path_to_videos_MOV_folder renaming videos as yuo want. I really suggest to rename it such as "img001.MOV" even if they are not img. Modify FLAGS in 1_create_datasets if necessary (default = True).
 
             mv ....     or    cp .....
-3) compile create_datasets.py. Now you will have all the frame of all the video well organized into the three sub-directory train, val, test.
+            
+3) compile 1_create_datasets.py. Now you will have all the frame of all the video well organized into the three sub-directory train, val, test.
 
             python3 path_to_python_script + create_dataset.py 
             
