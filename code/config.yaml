@@ -1,8 +1,15 @@
-path: /Users/alberto/ROBOTICS/personal_dataset/autovelox/data    # directory path containing the folder images and labels
-train: images/train
-val: images/train           # validation dataset --> could be the same as the train to have a simple training
+train: /Users/alberto/ROBOTICS/test_scrips/data/images/train
+val: /Users/alberto/ROBOTICS/test_scrips/data/images/val
+test: /Users/alberto/ROBOTICS/test_scrips/data/images/test
 
-# Set classes for training the model for all this classes
-names:
-  0: autovelox 
-  1: controllo_velocita 
+nc: 2
+names: ['autovelox', 'controllo velocita']
+
+roboflow:
+  workspace: university-qidrm
+  project: autovelox-detection
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/university-qidrm/autovelox-detection/dataset/2
+
+
