@@ -48,8 +48,10 @@ path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
 
 
 # Example usage with 60% reduction in dimensions
-output_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/aug_train"
-output_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/aug_train"
+# output_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/aug_train"
+output_image_directory = path_to_images_train_folder
+# output_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/aug_train"
+output_annotation_directory = path_to_labels_train_folder
 reduce = 0.6
 
 
@@ -212,4 +214,11 @@ def augment_images_custom(input_image_directory, output_image_directory, input_a
 #######################################################    MAIN    #######################################################################
 
 augment_images_custom(path_to_images_train_folder, output_image_directory, path_to_labels_train_folder, output_annotation_directory, reduce)
+
+#           ^_____     ONLY FOR TRAIN FOLDER
+
+
+augment_images_custom(path_to_images_val_folder, path_to_images_val_folder, path_to_labels_val_folder, path_to_labels_val_folder, reduce)
+
+#           ^______    ONLY FOR VALIDATION FOLDER    (I save in the same folder both the bw and resized images)
 
