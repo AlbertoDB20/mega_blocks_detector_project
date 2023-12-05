@@ -1,6 +1,7 @@
-train: /Users/alberto/ROBOTICS/test_scrips/data/images/train
-val: /Users/alberto/ROBOTICS/test_scrips/data/images/val
-test: /Users/alberto/ROBOTICS/test_scrips/data/images/test
+path: /Users/alberto/ROBOTICS/test_scrips/data
+train: images/train
+val: images/val
+test: images/test
 
 nc: 2
 names: ['autovelox', 'controllo velocita']
@@ -11,5 +12,4 @@ roboflow:
   version: 2
   license: CC BY 4.0
   url: https://universe.roboflow.com/university-qidrm/autovelox-detection/dataset/2
-
-
+  

@@ -3,6 +3,7 @@
  
 import json
 import os
+import re
 import shutil
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
@@ -26,9 +27,6 @@ cont_lab = 0
 json_files = []
 img_files = []
 
-# Get all files in the "assigns" folder
-files_in_assigns = os.listdir(path_to_assigns_folder)
-
 
 
 # I create/check the folder
@@ -46,16 +44,35 @@ except OSError:
 
 try: 
    if not os.path.exists(path_to_assigns_folder):
-        print("")
+        print("FOLDER READY")
 except OSError:
    print("ERROR: no assigns folder found")
 
 
 
 
+def remove_numbers(input_string):
+    """
+    Remove numbers from the input string.
+
+    Parameters:
+    - input_string (str): The input string.
+
+    Returns:
+    - str: The string without numbers.
+    """
+    return ''.join(char for char in input_string if not char.isdigit())
+
+
+
 # function to create .txt annotation file in the form:________img_#num_label.txt_________ 
 def create_txt_annotation(path_json, path_txt_folder):
-    path_to_txt_annotation_file = path_txt_folder + img + cont_lab + "_label.txt"
+    global cont_lab
+    new_file_name = img + str(cont_lab) + ".txt"                # img_#num_label.txt
+
+    # Create the new full path for the image in the destination folder
+    new_label_path = os.path.join(path_txt_folder, new_file_name)
+    
     # Apre il file JSON e carica i dati
     with open(path_json, 'r') as file:
         data = json.load(file)
@@ -64,47 +81,51 @@ def create_txt_annotation(path_json, path_txt_folder):
     if key in data and subkey in data[key]:
         values = data[key][subkey]
         # Ora puoi lavorare con i dati della bounding box come richiesto nel tuo script 3d_bbox_pixel_space.
-        with open(path_to_txt_annotation_file, 'w') as annotation_file:
+        with open(new_label_path, 'w') as annotation_file:
             annotation_file.write(str(values))                                      # TODO: call here a function to create YOLO annotation
     else:
         print("La sottochiave {subkey} non è presente nel file JSON.")
+    cont_lab = cont_lab + 1
 
 
 def save_img(img_file_path, path_to_images):
-    # Extract the file name and extension from the original image
-    file_name, extension = os.path.splitext(os.path.basename(img_file_path))                # in our case, file_name is view=#num
-
+    global cont_img
     # Modify the file name as desired (e.g., add a prefix)
-    new_file_name = img + cont_img + extension
+    new_file_name = img + str(cont_img) + ".jpeg"                # img_#num.jpeg
 
     # Create the new full path for the image in the destination folder
     new_image_path = os.path.join(path_to_images, new_file_name)
 
     # Copy the image to the new location with the new name
     shutil.copyfile(img_file_path, new_image_path)
-
-
+    cont_img = cont_img + 1
 
 
 
 # Filter only files with the ".json" extension
-for file_name in files_in_assigns:
-    if file_name.endswith(".json"):
-        json_files.append(file_name)
-    if file_name.startswith("view=") and file_name.endswith(".jpeg") and "_vertices" not in file_name and "_depth" not in file_name and "_depth_plane" not in file_name and "_bbox" not in file_name:
-        img_files.append(file_name)
+for folder_name in os.listdir(path_to_assigns_folder):
+    #folder_name_no_number = remove_numbers(folder_name)                    # uncomment this two lines to read also assign2 and assign3 
+    #if(folder_name_no_number.startswith("assign")):
+    if "assign1" in folder_name:
+        folder_path = os.path.join(path_to_assigns_folder, folder_name)
+        for scene_name in os.listdir(folder_path):
+            if "scene" in scene_name:
+                scene_path = os.path.join(folder_path, scene_name)
+                print (scene_path)
+                for file_name in os.listdir(scene_path):
+                    file_path = os.path.join(scene_path, file_name)
+                    if file_name.endswith(".json"):
+                        json_files.append(file_path)
+                        create_txt_annotation(file_path, path_to_txt_labels)
+                    if file_name.startswith("view=") and file_name.endswith(".jpeg") and "_vertices" not in file_name and "_depth" not in file_name and "_depth_plane" not in file_name and "_bbox" not in file_name:
+                        img_files.append(file_path)
+                        save_img(file_path, path_to_images)
 
-# Call the create_txt_annotation function for each JSON file
-for json_file in json_files:
-    # Construct the full path for the JSON file
-    json_file_path = os.path.join(path_to_assigns_folder, json_file)
-    # Call the create_txt_annotation function with the file path as a parameter
-    create_txt_annotation(json_file_path, path_to_txt_labels)
-    
+#print("FIRST 10 ELEMENT (debug):", json_files[:10])
 
-# Call the save_img function for each images found
-for img_file in img_files:
-    # Construct the full path for the JSON file
-    img_file_path = os.path.join(path_to_assigns_folder, img_file)
-    # Call the save_img function with the file path as a parameter
-    save_img(img_file_path, path_to_images)
+
+lj = len(json_files)
+li = len(img_files)
+if (lj != li):
+    print("ERRORE: DIMESIONE JSON FILES {lj} DIVERSA DA IMG FILES {li}")
+    exit()

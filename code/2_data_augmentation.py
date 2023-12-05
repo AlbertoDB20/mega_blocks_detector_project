@@ -10,8 +10,6 @@
         Now I consider only one of the previous three couple of folder  (easly path_image & path_label)
         3) I take one image from the path_image and its correspondent label file from path_label
         4) 
-        
-
 
 
 '''
