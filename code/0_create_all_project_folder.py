@@ -12,7 +12,7 @@
 import os
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
-path_to_project_folder = "/Users/alberto/ROBOTICS/test_scrips"
+path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project" 
 
 # DO NOT MODIFY THESE
 path_to_data_folder = path_to_project_folder + "/data"
