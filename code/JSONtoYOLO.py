@@ -143,7 +143,7 @@ def remove_numbers(input_string):
 
 
 
-def sebe_to_yolo(ulc, drc, w, h):                           # TODO: capire come sono scritte le annotations nel dataset di Sebe
+def sebe_to_yolo(ulc, drc, w, h):                
     #x_ulc, y_ulc, x_drc, y_drc, x_center_normalized, y_center_normalized, h_bb_normalized, w_bb_normalized = 0
     x_ulc = ulc[0]
     y_ulc = ulc[1]
@@ -157,22 +157,22 @@ def sebe_to_yolo(ulc, drc, w, h):                           # TODO: capire come 
 
 
 
-def find_extreme_coordinates(lista_coordinate):                 # TODO: da tradurre 
+def find_extreme_coordinates(lista_coordinate):
     if not lista_coordinate:
         return None, None
 
-    # Inizializza le coordinate estreme con il primo punto della lista
+    # Initialize the extreme coordinates with the first point of the list
     x_min, y_min = lista_coordinate[0]
     x_max, y_max = lista_coordinate[0]
 
-    # Itera attraverso le restanti coordinate per trovare i valori estremi
+    # Iterate through the remanent coordinates to find the min and max value
     for x, y in lista_coordinate:
         x_min = min(x_min, x)
         y_min = min(y_min, y)
         x_max = max(x_max, x)
         y_max = max(y_max, y)
 
-    # Restituisci le coordinate estreme
+    # Return extreme coordinates
     punto_alto_sinistra = [x_min, y_min]
     punto_basso_destra = [x_max, y_max]
     
@@ -269,3 +269,7 @@ li = len(img_files)
 if (lj != li):
     print("ERRORE: DIMESIONE JSON FILES {lj} DIVERSA DA IMG FILES {li}")
     exit()
+
+
+
+#TODO: adattare augmentation bw and rz alla struttura del dataset
