@@ -2,7 +2,7 @@
     FUNZIONA!!
     
         PYTHON SCRIPT FOR CREATING DATASETS.
-    This python script make two important operation:
+    This python script make three important operation:
     1) takes as input the folder containing all the .MOV videos and convert it in .mp4 format in a specific folder
     2) for all the .mp4 video in the MP4_FOLDER, the script save in image folder the associated frames in .jpg format.
         N.B.: it automatically creates image folder and MP4_video folder, but the .MOV one is necessary to the correct working flow of the script.
@@ -58,8 +58,8 @@ percentage_val = 0.2
 percentage_test = 0.2
 
 # Put True or False in this flags, according to your code
-DO_YOU_HAVE_MOV_VIDEO_TO_CONVERT = True
-DO_YOU_HAVE_MP4_VIDEO_TO_FRAME = True
+DO_YOU_HAVE_MOV_VIDEO_TO_CONVERT = False
+DO_YOU_HAVE_MP4_VIDEO_TO_FRAME = False
 DO_YOU_WANT_TO_SPLIT_IMAGES_IN_THREE_SUBDATASETS_TRAIN_VAL_TEST = True
 
 

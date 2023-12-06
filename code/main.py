@@ -16,3 +16,5 @@ model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
 result = model.train(data = "/Users/alberto/ROBOTICS/autovelox_detector_project/code/config.yaml", epochs=1)       # train the model
+
+
