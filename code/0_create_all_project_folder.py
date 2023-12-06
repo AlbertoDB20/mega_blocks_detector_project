@@ -57,8 +57,11 @@ string14 = "MP4 VIDEOS FOLDER\nSave in this folder all the .mp4 extended video, 
 def create_readme(path, readme_content):
    # Scrivi il contenuto nel file README.txt
    readme_path = os.path.join(path, 'README.md')
-   with open(readme_path, 'w') as readme_file:
-     readme_file.write(readme_content)
+   if os.path.isfile(readme_path):
+      return
+   else:
+      with open(readme_path, 'w') as readme_file:
+         readme_file.write(readme_content)
 
 
 
