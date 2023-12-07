@@ -20,11 +20,15 @@
     AFTER: 
     dataset_video_&_split.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
 
+    author: Alberto Dal Bosco 
+    date: 2/12/2023
+
 '''
  
 import json
 import os
 import shutil
+from tqdm import tqdm
 
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
@@ -161,7 +165,15 @@ def sebe_to_yolo(ulc, drc, w, h):
     w_bb_normalized = (x_drc - x_ulc)/w
     h_bb_normalized = (y_drc - y_ulc)/h
     x_center_normalized = x_ulc/w + w_bb_normalized/2
+    if x_center_normalized < 0.0:
+        x_center_normalized = 0.0
+    elif x_center_normalized > 1.0:
+        x_center_normalized = 1.0
     y_center_normalized = y_ulc/h + h_bb_normalized/2
+    if y_center_normalized < 0.0:
+        y_center_normalized = 0.0
+    elif y_center_normalized > 1.0:
+        y_center_normalized = 1.0
     return x_center_normalized, y_center_normalized, w_bb_normalized, h_bb_normalized
 
 
@@ -242,9 +254,10 @@ def save_img(img_file_path, path_to_images):
 ############################################################################################################################################################################################################################
 
 
+pbar = tqdm(os.listdir(path_to_assigns_folder))
 
 # Filter only files with the ".json" extension
-for folder_name in os.listdir(path_to_assigns_folder):
+for folder_name in pbar:
     if "assign" in folder_name:
         folder_path = os.path.join(path_to_assigns_folder, folder_name)
         for scene_name in os.listdir(folder_path):
@@ -256,10 +269,8 @@ for folder_name in os.listdir(path_to_assigns_folder):
                     file_path = os.path.join(scene_path, file_name)
                     if file_name.endswith(".json"):
                         json_path_list.append(file_path)
-                        #create_txt_annotation(file_path, path_to_txt_labels)
                     if file_name.startswith("view=") and file_name.endswith(".jpeg") and "_vertices" not in file_name and "_depth" not in file_name and "_depth_plane" not in file_name and "_bbox" not in file_name:
                         img_path_list.append(file_path)
-                        #save_img(file_path, path_to_images)
                 json_path_list.sort()
                 img_path_list.sort()
                 if(len(json_path_list) != len(img_path_list)):
@@ -280,13 +291,11 @@ if (lj != li):
     exit()
 
 
-
 #TODO: adattare augmentation bw and rz alla struttura del dataset
-#TODO: check center position when over 1.00000 
-#TODO: mettere progress bar per questo programma
-#TODO: capire come esportare il modello, come fare detect di un nuovo video/immagine non vista
 #TODO: cambiare nome progetto
 #TODO: rendere collabolatori Posky, Fede e Alex
-#TODO: modificare per bene il nome dei file, facendone descrizione, commenti, README, ottimizzazione, ...
 #TODO: guardare fine-tuning di Elia, per capire cosa posso fare di meglio
+
+# kikalore2002@gmail.com
+# 
 

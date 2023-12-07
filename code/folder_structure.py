@@ -1,5 +1,8 @@
 '''
 
+   ________________________________________FIRST SCRIPT TO BE EXECUTED______________________________________
+
+
    PYTHON SCRIPTS TO CREATE ALL THE FOLDER NECESSARY FOR THE PROJECTS
    This script made all us. 
    It creates all the necessary folder for the project, each of one contains a personal README.md file.
@@ -23,7 +26,10 @@
    assigns, models, folder must be add by us
    runs folder it is created automatically by fine-tuning.py script
 
-   
+   AFTER:
+   JSONtoYOLO script to take all the images and labels from Sebe dataset and rename/convert/move into data folder
+
+
    author: Alberto Dal Bosco 
    date: 22/11/2023
    

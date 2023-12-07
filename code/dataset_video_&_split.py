@@ -16,8 +16,8 @@
     Set to True or False three boolean variable according to the goal of the project to allow one or more of the 
     aforementioned operations.
 
-    AFTER: 
-    fine_tuning.py to train the newly created dataset
+    AFTER:  
+    augmentation.py to augment train and validation dataset
     
     
     author: Alberto Dal Bosco 

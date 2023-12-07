@@ -1,17 +1,21 @@
 '''
-        SCRIPT FOR DATA AUGMENTATION
+    SCRIPT FOR DATA AUGMENTATION
 
-        pip install albumentations
-        pip install Pillow
+    pip install albumentations
+    pip install Pillow
 
-        PRINCIPLE:
-        1) verify existence of path_to_images_train_folder, path_to_images_val_folder, path_to_images_test_folder
-        2) verify existence of path_to_labels_train_folder, path_to_labels_val_folder, path_to_labels_test_folder
-        Now I consider only one of the previous three couple of folder  (easly path_image & path_label)
-        3) I take one image from the path_image and its correspondent label file from path_label
-        4) 
+    PRINCIPLE:
+    1) verify existence of path_to_images_train_folder, path_to_images_val_folder, path_to_images_test_folder
+    2) verify existence of path_to_labels_train_folder, path_to_labels_val_folder, path_to_labels_test_folder
+    Now I consider only one of the previous three couple of folder  (easly path_image & path_label)
+    3) I take one image from the path_image and its correspondent label file from path_label
 
 
+    AFTER:  
+    fine_tuning.py to train the newly created dataset
+
+    author: Alberto Dal Bosco 
+    date: 22/11/2023
 '''
 import albumentations as A
 from albumentations import Resize
@@ -22,7 +26,7 @@ import shutil
 
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
-path_to_project_folder = "/Users/alberto/ROBOTICS/test_scrips"              #       <---------      MODIFY HERE
+path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
 
 # DO NOT MODIFY THESE
 path_to_data_folder = path_to_project_folder + "/data"
@@ -193,27 +197,27 @@ def augment_images_custom(input_image_directory, output_image_directory, input_a
     if not os.path.exists(output_annotation_directory):
         os.makedirs(output_annotation_directory)
 
-    image_files = [f for f in os.listdir(input_image_directory) if f.lower().endswith('.jpg')]          # here i take all the image_files with the .jpg extension
+    image_files = [f for f in os.listdir(input_image_directory) if f.lower().endswith('.jpeg')]          # here i take all the image_files with the .jpg extension
 
     for image_file in image_files:
         input_image_path = os.path.join(input_image_directory, image_file)              # path image
         
         convert_to_black_and_white_albumentations(input_image_path, output_image_directory)     # convert image in bw
-        resize_image_albumentations(input_image_path, output_image_directory, reduce)
+        #resize_image_albumentations(input_image_path, output_image_directory, reduce)
         
         label_file_name = get_filename_without_extension(image_file) + ".txt"               # example: I obtain img_0.txt 
         input_file = os.path.join(input_annotation_directory, label_file_name)
 
         copy_file_with_prefix(input_file, output_annotation_directory, "bw_")
-        copy_file_with_prefix(input_file, output_annotation_directory, "rz_")
+        #copy_file_with_prefix(input_file, output_annotation_directory, "rz_")
     print("Custom data augmentation with annotations using Albumentations completed.")
 
 
 #######################################################    MAIN    #######################################################################
 
-augment_images_custom(path_to_images_train_folder, output_image_directory, path_to_labels_train_folder, output_annotation_directory, reduce)
+augment_images_custom(path_to_images_train_folder, path_to_images_train_folder, path_to_labels_train_folder, path_to_labels_train_folder, reduce)
 
-#           ^_____     ONLY FOR TRAIN FOLDER
+#           ^_____     ONLY FOR TRAIN FOLDER    (I save in the same folder both the bw and resized images)
 
 
 augment_images_custom(path_to_images_val_folder, path_to_images_val_folder, path_to_labels_val_folder, path_to_labels_val_folder, reduce)
