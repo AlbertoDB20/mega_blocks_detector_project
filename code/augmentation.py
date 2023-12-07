@@ -224,3 +224,17 @@ augment_images_custom(path_to_images_val_folder, path_to_images_val_folder, path
 
 #           ^______    ONLY FOR VALIDATION FOLDER    (I save in the same folder both the bw and resized images)
 
+
+
+
+# TODO: capire perchè mi da corrupted quando faccio augmentation
+
+
+
+
+
+
+
+
+
+

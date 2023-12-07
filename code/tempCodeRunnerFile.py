@@ -1,1 +1,1 @@
-Resize(height=int(reduce * 
+autovelox_detector_project

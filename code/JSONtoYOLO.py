@@ -291,7 +291,6 @@ if (lj != li):
     exit()
 
 
-#TODO: adattare augmentation bw and rz alla struttura del dataset
 #TODO: cambiare nome progetto
 #TODO: rendere collabolatori Posky, Fede e Alex
 #TODO: guardare fine-tuning di Elia, per capire cosa posso fare di meglio
