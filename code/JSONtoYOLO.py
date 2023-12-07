@@ -3,13 +3,22 @@
 
 
 '''
+    SEBE to YOLO script
+    This script takes in input Sebe dataset saved in assigns folder and:
+        1) move and rename each images in data/images folder
+        2) read JSON file for each images, elaborate it computing YOLO annotations and save it in renamed .txt 
+           extended file in data/labels folder
 
-Labels for this format should be exported to YOLO format with one *.txt file per image. 
-If there are no objects in an image, no *.txt file is required. 
-The *.txt file should be formatted with one row per object in class x_center y_center width height format. 
-Box coordinates must be in normalized xywh format (from 0 to 1). 
-If your boxes are in pixels, you should divide x_center and width by image width, and y_center and height by image height. 
-Class numbers should be zero-indexed (start with 0).
+    LABEL STRUCTURE: 
+    Labels for this format should be exported to YOLO format with one *.txt file per image. 
+    If there are no objects in an image, no *.txt file is required. 
+    The *.txt file should be formatted with one row per object in class x_center y_center width height format. 
+    Box coordinates must be in normalized xywh format (from 0 to 1). 
+    If your boxes are in pixels, you should divide x_center and width by image width, and y_center and height by image height. 
+    Class numbers should be zero-indexed (start with 0).
+
+    AFTER: 
+    dataset_video_&_split.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
 
 '''
  
