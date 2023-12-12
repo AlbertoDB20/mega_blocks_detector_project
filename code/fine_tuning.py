@@ -43,12 +43,17 @@
 from ultralytics import YOLO
 import torch
 
-print("AVAILABLE MPS: ", torch.backends.mps.is_available())
+if not torch.backends.mps.is_available():
+    if not torch.backends.mps.is_built():
+        print("MPS not available because the current PyThorch install was not build with MPS enabled")
+    else:
+        print("MPS not available because the current MacOS version is not 12.3+ and/or you do not have an MPS-enabled device on this machine.")
+else:
+    mps_device = torch.device("mps")
 
 # Load a model
 model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
-result = model.train(data = "/Users/alberto/ROBOTICS/autovelox_detector_project/code/config.yaml", epochs=50, device="mps")       # train the model
-
-
+result = model.train(data = "/Users/alberto/ROBOTICS/autovelox_detector_project/code/config.yaml", epochs=3, imgsz=640)       # train the model
+model.to(mps_device)
