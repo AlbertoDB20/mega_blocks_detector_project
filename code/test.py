@@ -1,11 +1,20 @@
-from tqdm import tqdm
-import os
-from time import sleep
+# use this for test python code
 
-pbar = tqdm(os.listdir('/Users/alberto/ROBOTICS/autovelox_detector_project/assigns'))
-for char in pbar:
-    sleep(0.25)
+from PIL import Image
 
-n_folder = int(os.listdir('/Users/alberto/ROBOTICS/autovelox_detector_project/assigns').count)
-print(n_folder)
-print(type(n_folder))
+def is_valid_jpeg(image_path):
+    try:
+        with Image.open(image_path) as img:
+            # Verifica se il formato dell'immagine è JPEG
+            return img.format == 'JPEG'
+    except Exception as e:
+        # Gestisci eventuali eccezioni
+        return False
+
+# Esempio di utilizzo
+image_path = "/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_26.jpeg"
+
+if is_valid_jpeg(image_path):
+    print(f"L'immagine {image_path} è un JPEG valido.")
+else:
+    print(f"L'immagine {image_path} non è un JPEG valido o non può essere aperta correttamente.")

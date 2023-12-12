@@ -1,1 +1,1 @@
-autovelox_detector_project
+path_to_test_image

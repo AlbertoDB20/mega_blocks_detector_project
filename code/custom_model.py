@@ -50,3 +50,5 @@ for result in results:
         print("   p: {:.2f} ".format(round(conf[0], 2)))
         print("   C: (" + str(int(bb[0][0])) + "," + str(int(bb[0][1])) + ")")
         print("\n")
+
+# TODO: salvare dati in un json o in un message --> guardare ROS standard
