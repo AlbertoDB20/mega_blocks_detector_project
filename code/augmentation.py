@@ -1,32 +1,30 @@
 '''
     SCRIPT FOR DATA AUGMENTATION
-
-    pip install albumentations
-    pip install Pillow
-
-    PRINCIPLE:
-    1) verify existence of path_to_images_train_folder, path_to_images_val_folder, path_to_images_test_folder
-    2) verify existence of path_to_labels_train_folder, path_to_labels_val_folder, path_to_labels_test_folder
-    Now I consider only one of the previous three couple of folder  (easly path_image & path_label)
-    3) I take one image from the path_image and its correspondent label file from path_label
-
-
+    This script resize and convert to black and white each .jpeg image in the three folder val, train and test 
+    adding a given prefix.
+    At the same time it takes all the .txt annotation files and does exactly the same renaming for each file, to
+    have correspondence between images and labels.
+    This procedure is applied for both val, train and test.
+    I added a progress bar to help the user understand how far the conversion has reached.
+    
     AFTER:  
     fine_tuning.py to train the newly created dataset
-
+    
     author: Alberto Dal Bosco 
     date: 22/11/2023
 '''
-import albumentations as A
-from albumentations import Resize
+
 from PIL import Image
 import os
-import numpy as np
-import shutil
+from tqdm import tqdm  # Assicurati di aver installato la libreria tqdm: pip install tqdm
 
 
-# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
+
+# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM, AND THE PREFIX, w, h
 path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
+prefix = "rbw"
+w = 640
+h = 640
 
 # DO NOT MODIFY THESE
 path_to_data_folder = path_to_project_folder + "/data"
@@ -49,192 +47,115 @@ path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
 
 
 
-# Example usage with 60% reduction in dimensions
-# output_image_directory = "/Users/alberto/ROBOTICS/test_scrips/data/images/aug_train"
-output_image_directory = path_to_images_train_folder
-# output_annotation_directory = "/Users/alberto/ROBOTICS/test_scrips/data/labels/aug_train"
-output_annotation_directory = path_to_labels_train_folder
-reduce = 0.6
-
-
-def load_annotations(annotation_directory, image_file):
-    annotation_file = os.path.join(annotation_directory, f"{os.path.splitext(image_file)[0]}.txt")
-
-    annotations = []
-
-    with open(annotation_file, 'r') as f:
-        lines = f.readlines()
-
-        for line in lines:
-            values = line.strip().split()
-            if len(values) == 5:
-                class_index = int(values[0])
-                x_center, y_center, width, height = map(float, values[1:])
-                annotations.append((class_index, x_center, y_center, width, height))
-
-    return annotations
-
-def save_annotations_yolo_1_1(annotation_path, annotations):
-    with open(annotation_path, 'w') as f:
-        for annotation in annotations:
-            class_index, x_center, y_center, width, height = annotation
-
-            # Convert normalized coordinates to image-specific coordinates
-            x_center *= width
-            y_center *= height
-            width *= width
-            height *= height
-
-            line = f"{class_index} {x_center} {y_center} {width} {height}\n"
-            f.write(line)
-
-
-def convert_to_black_and_white_albumentations(input_image, output_folder):
-    # Define the augmentation pipeline
-    transform = A.Compose([
-        A.ToGray(p=1.0),
-    ])
-    
-    # Load the image
+def resize_and_convert_to_bw(input_path, output_path, width, height, delete_original=False, rename=False, prefix="rbw"):
     try:
-        image = Image.open(input_image)
-    except Exception as e:
-        print(f"Error opening the image: {e}")
-        return
-    
-    # Convert the image to a NumPy array
-    image_array = np.array(image)
-    
-    # Apply the augmentation
-    augmented = transform(image=image_array)
-    
-    # Convert the augmented image array back to a PIL image
-    augmented_image = Image.fromarray(augmented['image'])
+        # Open the image
+        with Image.open(input_path) as img:
+            # Resize the image
+            resized_img = img.resize((width, height))
 
-    # Extract the file name and create the path for the output image
-    file_name = os.path.basename(input_image)
-    output_path = os.path.join(output_folder, f"bw_{file_name}")
-    
-    # Save the augmented image to the output folder
+            # Convert the image to black and white
+            bw_img = resized_img.convert("L")
+
+            # Generate the output filename based on the original or a new name
+            if rename:
+                output_filename = f"{prefix}_{os.path.basename(input_path)}"
+            else:
+                output_filename = os.path.basename(input_path)
+
+            output_path = os.path.join(os.path.dirname(input_path), output_filename)
+
+            # Save the resized and black-and-white image
+            bw_img.save(output_path)
+
+        # Delete the original image if requested
+        if delete_original:
+            os.remove(input_path)
+
+    except Exception as e:
+        print(f"Error during resizing and black-and-white conversion of {input_path}: {str(e)}")
+
+
+def resize_and_convert_in_folder(folder_path, width, height, delete_original=False, rename=False, prefix="rbw"):
     try:
-        augmented_image.save(output_path)
-        print(f"Image converted successfully. Saved to: {output_path}")
+        # Ensure that the folder path ends with '/'
+        if not folder_path.endswith('/'):
+            folder_path += '/'
+
+        # Get the list of files to process
+        file_list = [filename for filename in os.listdir(folder_path) if filename.lower().endswith(".jpeg")]
+
+        # Initialize progress bar
+        progress_bar = tqdm(total=len(file_list), desc="Processing images")
+
+        # Scan the folder
+        for filename in file_list:
+            input_path = os.path.join(folder_path, filename)
+
+            # Generate the name for the resized and converted file
+            output_filename = f"{prefix}_{filename}" if rename else filename
+            output_path = os.path.join(folder_path, output_filename)
+
+            # Resize and convert the image
+            resize_and_convert_to_bw(input_path, output_path, width, height, delete_original, rename, prefix)
+
+            # Update progress bar
+            progress_bar.update(1)
+
+        # Close the progress bar
+        progress_bar.close()
+
     except Exception as e:
-        print(f"Error saving the image: {e}")
+        print(f"Error during resizing and black-and-white conversion of images in the folder {folder_path}: {str(e)}")
 
 
 
-def resize_image_albumentations(input_image, output_folder, resize_value):
-   # Load the image
+# Function to rename text files in a folder
+def rename_txt_files(folder_path, prefix):
     try:
-        image = Image.open(input_image)
+        # Ensure that the folder path ends with '/'
+        if not folder_path.endswith('/'):
+            folder_path += '/'
+
+        # Get the list of files to process
+        file_list = [filename for filename in os.listdir(folder_path) if filename.lower().endswith(".txt")]
+
+        # Initialize progress bar
+        progress_bar = tqdm(total=len(file_list), desc="Renaming text files")
+
+        # Scan the folder
+        for filename in file_list:
+            input_path = os.path.join(folder_path, filename)
+
+            # Generate the new name for the text file
+            new_filename = f"{prefix}_{filename}"
+            new_path = os.path.join(folder_path, new_filename)
+
+            # Rename the text file
+            os.rename(input_path, new_path)
+
+            # Update progress bar
+            progress_bar.update(1)
+
+        # Close the progress bar
+        progress_bar.close()
+
     except Exception as e:
-        print(f"Error opening the image: {e}")
-        return
-    
-    final_height = int(resize_value * image.height)
-    final_width = int(resize_value * image.width)
+        print(f"Error during renaming text files in the folder {folder_path}: {str(e)}")
 
-    # Definisci la trasformazione di resize
-    transform = Resize(
-        final_height, 
-        final_width
-        )
+print("\nTRAIN FOLDER")
+resize_and_convert_in_folder(path_to_images_train_folder, w, h, delete_original=True, rename=True, prefix=prefix)
+rename_txt_files(path_to_labels_train_folder, prefix)
 
-    # Applica la trasformazione
-    augmented = transform(image=np.array(image))
+print("\nVAL FOLDER")
+resize_and_convert_in_folder(path_to_images_val_folder, w, h, delete_original=True, rename=True, prefix=prefix)
+rename_txt_files(path_to_labels_val_folder, prefix)
 
-    # Ottieni l'immagine ridimensionata
-    resized_image = Image.fromarray(augmented['image'])
-
-    # Crea la cartella se non esiste già
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-
-    # Extract the file name and create the path for the output image
-    file_name = os.path.basename(input_image)
-    output_path = os.path.join(output_folder, f"rz_{file_name}")
-
-    # Save the augmented image to the output folder
-    try:
-        resized_image.save(output_path)
-        print(f"Image converted successfully. Saved to: {output_path}")
-    except Exception as e:
-        print(f"Error saving the image: {e}")
-    
+print("\nTEST FOLDER")
+resize_and_convert_in_folder(path_to_images_test_folder, w, h, delete_original=True, rename=True, prefix=prefix)
+rename_txt_files(path_to_labels_test_folder, prefix)
 
 
-# function to get filename without extension
-def get_filename_without_extension(file_name):
-    name, extension = os.path.splitext(file_name)
-    return name
-
-
-
-def copy_file_with_prefix(input_file, output_folder, prefix):               # prefix example: bw_ or rz_
-    # Extract the file name and path
-    file_name = os.path.basename(input_file)
-    
-    # Add the "bw_" prefix to the file name
-    new_file_name = f"{prefix}{file_name}"
-    
-    # Create the full path for the output file
-    output_path = os.path.join(output_folder, new_file_name)
-    
-    try:
-        # Copy the file to the new location
-        shutil.copy2(input_file, output_path)
-        print(f"File copied successfully. Saved to: {output_path}")
-    except Exception as e:
-        print(f"Error copying the file: {e}")
-
-
-
-def augment_images_custom(input_image_directory, output_image_directory, input_annotation_directory, output_annotation_directory, reduce=0.5):
-    if not os.path.exists(output_image_directory):
-        os.makedirs(output_image_directory)
-
-    if not os.path.exists(output_annotation_directory):
-        os.makedirs(output_annotation_directory)
-
-    image_files = [f for f in os.listdir(input_image_directory) if f.lower().endswith('.jpeg')]          # here i take all the image_files with the .jpg extension
-
-    for image_file in image_files:
-        input_image_path = os.path.join(input_image_directory, image_file)              # path image
-        
-        convert_to_black_and_white_albumentations(input_image_path, output_image_directory)     # convert image in bw
-        #resize_image_albumentations(input_image_path, output_image_directory, reduce)
-        
-        label_file_name = get_filename_without_extension(image_file) + ".txt"               # example: I obtain img_0.txt 
-        input_file = os.path.join(input_annotation_directory, label_file_name)
-
-        copy_file_with_prefix(input_file, output_annotation_directory, "bw_")
-        #copy_file_with_prefix(input_file, output_annotation_directory, "rz_")
-    print("Custom data augmentation with annotations using Albumentations completed.")
-
-
-#######################################################    MAIN    #######################################################################
-
-augment_images_custom(path_to_images_train_folder, path_to_images_train_folder, path_to_labels_train_folder, path_to_labels_train_folder, reduce)
-
-#           ^_____     ONLY FOR TRAIN FOLDER    (I save in the same folder both the bw and resized images)
-
-
-augment_images_custom(path_to_images_val_folder, path_to_images_val_folder, path_to_labels_val_folder, path_to_labels_val_folder, reduce)
-
-#           ^______    ONLY FOR VALIDATION FOLDER    (I save in the same folder both the bw and resized images)
-
-
-
-
-# TODO: capire perchè mi da corrupted quando faccio augmentation
-
-
-
-
-
-
-
-
-
-
+#TODO: capire per qualche cavolo di ragione mi da 
+#               Corrupt JPEG data: premature end of data segment
+#       quando faccio fine_tuning.py
