@@ -14,7 +14,7 @@
     date: 22/11/2023
 '''
 
-from PIL import Image
+import cv2
 import os
 from tqdm import tqdm  # Assicurati di aver installato la libreria tqdm: pip install tqdm
 
@@ -49,31 +49,25 @@ path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
 
 def resize_and_convert_to_bw(input_path, output_path, width, height, delete_original=False, rename=False, prefix="rbw"):
     try:
-        # Open the image
-        with Image.open(input_path) as img:
-            # Resize the image
-            resized_img = img.resize((width, height))
+        # Leggi l'immagine con OpenCV
+        img = cv2.imread(input_path)
 
-            # Convert the image to black and white
-            bw_img = resized_img.convert("L")
+        # Ridimensiona l'immagine
+        resized_img = cv2.resize(img, (width, height))
 
-            # Generate the output filename based on the original or a new name
-            if rename:
-                output_filename = f"{prefix}_{os.path.basename(input_path)}"
-            else:
-                output_filename = os.path.basename(input_path)
+        # Converti l'immagine in scala di grigi
+        bw_img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2GRAY)
 
-            output_path = os.path.join(os.path.dirname(input_path), output_filename)
+        # Salva l'immagine ridimensionata e in scala di grigi
+        cv2.imwrite(output_path, bw_img)
 
-            # Save the resized and black-and-white image
-            bw_img.save(output_path)
-
-        # Delete the original image if requested
+        # Elimina l'immagine originale se richiesto
         if delete_original:
             os.remove(input_path)
 
     except Exception as e:
-        print(f"Error during resizing and black-and-white conversion of {input_path}: {str(e)}")
+        print(f"Errore durante il ridimensionamento e la conversione in scala di grigi di {input_path}: {str(e)}")
+
 
 
 def resize_and_convert_in_folder(folder_path, width, height, delete_original=False, rename=False, prefix="rbw"):
@@ -89,19 +83,18 @@ def resize_and_convert_in_folder(folder_path, width, height, delete_original=Fal
         progress_bar = tqdm(total=len(file_list), desc="Processing images")
 
         # Scan the folder
-        for filename in file_list:
-            input_path = os.path.join(folder_path, filename)
+        for filename in os.listdir(folder_path):
+            if filename.lower().endswith(".jpeg"):
+                input_path = os.path.join(folder_path, filename)
 
-            # Generate the name for the resized and converted file
-            output_filename = f"{prefix}_{filename}" if rename else filename
-            output_path = os.path.join(folder_path, output_filename)
+                # Generate the name for the resized and converted file
+                output_filename = f"{prefix}_{filename}" if rename else filename
+                output_path = os.path.join(folder_path, output_filename)
 
-            # Resize and convert the image
-            resize_and_convert_to_bw(input_path, output_path, width, height, delete_original, rename, prefix)
-
-            # Update progress bar
-            progress_bar.update(1)
-
+                # Resize and convert the image
+                resize_and_convert_to_bw(input_path, output_path, width, height, delete_original, rename)
+                # Update progress bar
+                progress_bar.update(1)
         # Close the progress bar
         progress_bar.close()
 
@@ -143,6 +136,7 @@ def rename_txt_files(folder_path, prefix):
     except Exception as e:
         print(f"Error during renaming text files in the folder {folder_path}: {str(e)}")
 
+
 print("\nTRAIN FOLDER")
 resize_and_convert_in_folder(path_to_images_train_folder, w, h, delete_original=True, rename=True, prefix=prefix)
 rename_txt_files(path_to_labels_train_folder, prefix)
@@ -154,8 +148,3 @@ rename_txt_files(path_to_labels_val_folder, prefix)
 print("\nTEST FOLDER")
 resize_and_convert_in_folder(path_to_images_test_folder, w, h, delete_original=True, rename=True, prefix=prefix)
 rename_txt_files(path_to_labels_test_folder, prefix)
-
-
-#TODO: capire per qualche cavolo di ragione mi da 
-#               Corrupt JPEG data: premature end of data segment
-#       quando faccio fine_tuning.py
