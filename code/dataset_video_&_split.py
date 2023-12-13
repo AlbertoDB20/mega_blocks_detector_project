@@ -188,7 +188,7 @@ def frammenta_video(video_path, output_folder, video_name):
         if success:
             for i in tqdm(range(frame_number), desc = "     Frame: ", unit = "frame"):
                 # Salva il frame come immagine JPG
-                frame_path = f"{output_folder}/{get_filename_without_extension(video_name)}__frame_{count}.jpg"
+                frame_path = f"{output_folder}/{get_filename_without_extension(video_name)}__frame_{count}.jpeg"
                 cv2.imwrite(frame_path, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])  # Imposta la qualità dell'immagine a 90 (valore tipico)
 
                 # Leggi il prossimo frame

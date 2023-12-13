@@ -1,20 +1,13 @@
 # use this for test python code
+import os
+import cv2
 
-from PIL import Image
+path = "/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test"
+file = "rbw_img_3.jpeg"
 
-def is_valid_jpeg(image_path):
-    try:
-        with Image.open(image_path) as img:
-            # Verifica se il formato dell'immagine è JPEG
-            return img.format == 'JPEG'
-    except Exception as e:
-        # Gestisci eventuali eccezioni
-        return False
-
-# Esempio di utilizzo
-image_path = "/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_26.jpeg"
-
-if is_valid_jpeg(image_path):
-    print(f"L'immagine {image_path} è un JPEG valido.")
+with open(os.path.join(path, file), 'rb') as f:
+    check_chars = f.read()[-2:]
+if check_chars != b'\xff\xd9':
+    print('Not complete image')
 else:
-    print(f"L'immagine {image_path} non è un JPEG valido o non può essere aperta correttamente.")
+    imrgb = cv2.imread(os.path.join(path, file), 1)

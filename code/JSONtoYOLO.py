@@ -240,7 +240,7 @@ def create_txt_annotation(path_json, path_txt_folder):
 def save_img(img_file_path, path_to_images):
     global cont_img
     # Modify the file name as desired (e.g., add a prefix)
-    new_file_name = img + str(cont_img) + ".jpeg"                # img_#num.jpeg
+    new_file_name = img + str(cont_img) + '.jpeg'                   # img_#num.jpeg
 
     # Create the new full path for the image in the destination folder
     new_image_path = os.path.join(path_to_images, new_file_name)

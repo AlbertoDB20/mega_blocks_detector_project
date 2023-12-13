@@ -1,1 +1,1 @@
-path_to_test_image
+[int(cv2.IMWRITE_JPEG_QUALITY), 90]
