@@ -62,5 +62,5 @@ else:
 model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
-result = model.train(data = path_config, epochs=3, imgsz=640, device = mps_device)       # train the model
+result = model.train(data = path_config, epochs=100, imgsz=640, device = mps_device)       # train the model
 #model.to(mps_device)       # not convenient
