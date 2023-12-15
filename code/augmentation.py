@@ -44,7 +44,7 @@ path_to_labels_test_folder = path_to_labels_folder + "/test"
 
 path_to_videos_MOV_folder = path_to_videos_folder + "/videos_MOV"
 path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
-
+path_to_frame_folder = path_to_videos_folder + "/frame"
 
 
 def resize_and_convert_to_bw(input_path, output_path, width, height, delete_original=False, rename=False, prefix="rbw"):
@@ -77,14 +77,14 @@ def resize_and_convert_in_folder(folder_path, width, height, delete_original=Fal
             folder_path += '/'
 
         # Get the list of files to process
-        file_list = [filename for filename in os.listdir(folder_path) if filename.lower().endswith(".jpeg")]
+        file_list = [filename for filename in os.listdir(folder_path) if filename.lower().endswith(".jpg")]
 
         # Initialize progress bar
         progress_bar = tqdm(total=len(file_list), desc="Processing images")
 
         # Scan the folder
         for filename in os.listdir(folder_path):
-            if filename.lower().endswith(".jpeg"):
+            if filename.lower().endswith(".jpg"):
                 input_path = os.path.join(folder_path, filename)
 
                 # Generate the name for the resized and converted file
@@ -137,6 +137,7 @@ def rename_txt_files(folder_path, prefix):
         print(f"Error during renaming text files in the folder {folder_path}: {str(e)}")
 
 
+
 print("\nTRAIN FOLDER")
 resize_and_convert_in_folder(path_to_images_train_folder, w, h, delete_original=True, rename=True, prefix=prefix)
 rename_txt_files(path_to_labels_train_folder, prefix)
@@ -148,3 +149,5 @@ rename_txt_files(path_to_labels_val_folder, prefix)
 print("\nTEST FOLDER")
 resize_and_convert_in_folder(path_to_images_test_folder, w, h, delete_original=True, rename=True, prefix=prefix)
 rename_txt_files(path_to_labels_test_folder, prefix)
+
+

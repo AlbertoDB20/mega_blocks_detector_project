@@ -45,65 +45,25 @@ path_to_labels_test_folder = path_to_labels_folder + "/test"
 
 path_to_videos_MOV_folder = path_to_videos_folder + "/videos_MOV"
 path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
-
+path_to_frame_folder = path_to_videos_folder + "/frame"
 
 
 # Necessary variable
 contatore = 0
 currentFrame = 0
 percentage_train = 0.7
-percentage_val = 0.15
-percentage_test = 0.15
+percentage_val = 0.2
+percentage_test = 0.1
 
 
 
 # function to split images into the three subdirectory train, val and test.
 def split_images(images_directory, l_dir, train_directory, tl_dir, validation_directory, vl_dir, test_directory, testl_dir, x, y, z):
-    # I create the folder train, validation, testing for images
-    try: 
-        if not os.path.exists(train_directory):
-            os.makedirs(train_directory)
-    except OSError:
-        print("ERROR in creating directory {train_directory}")
-
-    try: 
-        if not os.path.exists(validation_directory):
-            os.makedirs(validation_directory)
-    except OSError:
-        print("ERROR in creating directory {validation_directory}")
-
-    try: 
-        if not os.path.exists(test_directory):
-            os.makedirs(test_directory)
-    except OSError:
-        print("ERROR in creating directory {test_directory}")
-
-    # I create the folder train, validation, testing for labels
-    try: 
-        if not os.path.exists(tl_dir):
-            os.makedirs(tl_dir)
-    except OSError:
-        print("ERROR in creating directory {tl_dir}")
-
-    try: 
-        if not os.path.exists(vl_dir):
-            os.makedirs(vl_dir)
-    except OSError:
-        print("ERROR in creating directory {vl_dir}")
-
-    try: 
-        if not os.path.exists(testl_dir):
-            os.makedirs(testl_dir)
-    except OSError:
-        print("ERROR in creating directory {testl_dir}")
-
-
-    
     #Splitting of three sub-folder
     split = (x, y, z)
     
     # List of files in the "images" folder
-    image_files = [f for f in os.listdir(images_directory) if f.endswith('.jpeg')]
+    image_files = [f for f in os.listdir(images_directory) if f.endswith('.jpg')]
     label_files = [f for f in os.listdir(l_dir) if f.endswith('.txt')]
 
     image_files.sort()

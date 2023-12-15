@@ -18,7 +18,7 @@
     Class numbers should be zero-indexed (start with 0).
 
     AFTER: 
-    dataset_video_&_split.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
+    split_dataset.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
 
     author: Alberto Dal Bosco 
     date: 2/12/2023
@@ -51,6 +51,10 @@ path_to_images_test_folder = path_to_images_folder + "/test"
 path_to_labels_train_folder = path_to_labels_folder + "/train"
 path_to_labels_val_folder = path_to_labels_folder + "/val"
 path_to_labels_test_folder = path_to_labels_folder + "/test"
+
+path_to_videos_MOV_folder = path_to_videos_folder + "/videos_MOV"
+path_to_videos_MP4_folder = path_to_videos_folder + "/videos_MP4"
+path_to_frame_folder = path_to_videos_folder + "/frame"
 
 # useful string
 img = "img_"
@@ -92,26 +96,6 @@ height = 1024
 width = 1024
 
 
-# I create/check the folder
-try: 
-   if not os.path.exists(path_to_images_folder):
-      os.makedirs(path_to_images_folder)
-except OSError:
-   print("ERROR in creating directory for image")
-
-try: 
-   if not os.path.exists(path_to_labels_folder):
-      os.makedirs(path_to_labels_folder)
-except OSError:
-   print("ERROR in creating directory for txt labels")
-
-try: 
-   if not os.path.exists(path_to_assigns_folder):
-        print("FOLDER READY")
-except OSError:
-   print("ERROR: no assigns folder found")
-
-
 
 def convert_id_to_num(id):
     if id == id0:
@@ -139,20 +123,6 @@ def convert_id_to_num(id):
     else: 
         print("ERROR: no matching of id")
         exit()
-
-
-
-def remove_numbers(input_string):
-    """
-    Remove numbers from the input string.
-
-    Parameters:
-    - input_string (str): The input string.
-
-    Returns:
-    - str: The string without numbers.
-    """
-    return ''.join(char for char in input_string if not char.isdigit())
 
 
 
@@ -240,7 +210,7 @@ def create_txt_annotation(path_json, path_txt_folder):
 def save_img(img_file_path, path_to_images):
     global cont_img
     # Modify the file name as desired (e.g., add a prefix)
-    new_file_name = img + str(cont_img) + '.jpeg'                   # img_#num.jpeg
+    new_file_name = img + str(cont_img) + '.jpg'                   # img_#num.jpeg
 
     # Create the new full path for the image in the destination folder
     new_image_path = os.path.join(path_to_images, new_file_name)

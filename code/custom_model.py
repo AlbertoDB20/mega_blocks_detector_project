@@ -12,13 +12,19 @@ from ultralytics import YOLO
 import cv2
 
 
-path_to_model = '/Users/alberto/runs/detect/train6/weights/best.pt'
+# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
+path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"  
+
+# path to best.pt file to refer for prediction   --> CHANGE TRAIN# FOLDER
+path_best_model = path_to_project_folder + "/runs/detect/train12/weights/best.pt"
+
 path_to_video = 'insert here'
 path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/img7.jpg'
 path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/img_5.jpeg'
 
-# Load a pre-trained YOLOv8n model
-model = YOLO (path_to_model)       # build new model from scratch
+
+# Load a pre-trained YOLOv8n model (choose the best.pt file)
+model = YOLO (path_best_model)       # build new model from scratch
 
 # creating a object
 image = cv2.imread(path_to_test_image)

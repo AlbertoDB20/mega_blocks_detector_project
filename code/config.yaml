@@ -3,7 +3,10 @@ train: images/train
 val: images/val
 test: images/test
 
-# Classes (80 COCO classes)
+# Number of classes
+nc: 11
+
+# Classes
 names:
   0: X1-Y1-Z2
   1: X1-Y2-Z1
@@ -19,8 +22,8 @@ names:
 
 roboflow:
   workspace: university-qidrm
-  project: autovelox-detection
-  version: 2
+  project: mega-blocks-detection
+  version: 1
   license: CC BY 4.0
-  url: https://universe.roboflow.com/university-qidrm/autovelox-detection/dataset/2
+  url: https://universe.roboflow.com/university-qidrm/mega-blocks-detection/dataset/1
   

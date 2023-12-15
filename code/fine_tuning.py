@@ -43,6 +43,13 @@
 from ultralytics import YOLO
 import torch
 
+# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
+path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"  
+
+# path to yaml config file
+path_config = path_to_project_folder + "/code/config.yaml"
+
+
 if not torch.backends.mps.is_available():
     if not torch.backends.mps.is_built():
         print("MPS not available because the current PyThorch install was not build with MPS enabled")
@@ -55,5 +62,5 @@ else:
 model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
-result = model.train(data = "/Users/alberto/ROBOTICS/autovelox_detector_project/code/config.yaml", epochs=3, imgsz=640)       # train the model
-model.to(mps_device)
+result = model.train(data = path_config, epochs=3, imgsz=640, device = mps_device)       # train the model
+#model.to(mps_device)       # not convenient
