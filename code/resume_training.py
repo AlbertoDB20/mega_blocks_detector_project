@@ -4,11 +4,11 @@ from ultralytics import YOLO
 path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"  
 
 # path to last.pt file to refer for resume training procedure
-path_last_model = path_to_project_folder + "/runs/detect/train12/weights/last.pt"
+path_last_model = path_to_project_folder + "/runs/detect/train17/weights/last.pt"
 
 
 # Load a model
 model = YOLO(path_last_model)
 
 # Resume training 
-results = model.train(resume=True)
+results = model.train(device=None,resume=True)

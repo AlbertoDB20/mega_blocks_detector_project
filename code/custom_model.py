@@ -16,11 +16,11 @@ import cv2
 path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"  
 
 # path to best.pt file to refer for prediction   --> CHANGE TRAIN# FOLDER
-path_best_model = path_to_project_folder + "/runs/detect/train12/weights/best.pt"
+path_best_model = path_to_project_folder + "/runs/detect/final_training/best.pt"
 
 path_to_video = 'insert here'
 path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/img7.jpg'
-path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/img_5.jpeg'
+path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_5.jpg'
 
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)

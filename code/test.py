@@ -2,8 +2,8 @@
 import os
 import cv2
 
-path = "/Users/alberto/ROBOTICS/autovelox_detector_project/"
-file = "my_img_0__frame_150_jpeg.rf.068edbb4669b4e4eed834d0688c4407a.jpg"
+path = "/Users/alberto/Desktop/prj/data/images/val"
+file = "rbw_my_img_0__frame_50.jpg"
 
 with open(os.path.join(path, file), 'rb') as f:
     check_chars = f.read()[-2:]

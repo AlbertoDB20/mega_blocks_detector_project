@@ -9,7 +9,12 @@
     
     AFTER:  
     fine_tuning.py to train the newly created dataset
+        OR
+    TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
     
+    The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
+    The second one is faster and less computational for the device, but needs stable internet connection!
+
     author: Alberto Dal Bosco 
     date: 22/11/2023
 '''
@@ -24,7 +29,7 @@ import shutil
 
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM, AND THE PREFIX, w, h
-path_to_project_folder = "/Users/alberto/Desktop/prj" #"/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
+path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
 prefix_r = "r"
 prefix_rbw = "rbw"
 prefix_rl = "rl"

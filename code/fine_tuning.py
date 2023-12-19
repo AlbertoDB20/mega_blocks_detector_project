@@ -30,10 +30,17 @@
         of artificial intelligence operations and machine learning tasks. ]
         source: Apple
 
+
+    N.B.:
+    TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
+    
+    The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
+    The second one is faster and less computational for the device, but needs stable internet connection!
+
+    
     AFTER:
     custom_model.py to use the trained model in real environment
         
-
     author: Alberto Dal Bosco
     date: 1/12/2023 
 
@@ -63,4 +70,3 @@ model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
 result = model.train(data = path_config, epochs=100, imgsz=640, device = mps_device)       # train the model
-#model.to(mps_device)       # not convenient
