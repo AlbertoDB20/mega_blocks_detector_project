@@ -1,0 +1,75 @@
+author: Alberto Dal Bosco
+date: 19/12/2023
+professors: Luigi Palopoli, Niculae Sebe, Michele Focchi
+group: Alberto Dal Bosco, Jacopo Veronese, Federica Lorenzini, Alex Pegoraro 
+subject: report
+project description: A number of mega-blocks, that are like big pieces of LEGO, are stored without any specific order 
+on a stand located within the workspace of a robotic manipulator. 
+The manipulator is an anthropomorphic arm, with a spherical wrist and a two-fingered gripper as end-effector. 
+The objects can belong to different classes but have a known geometry (coded in the STL files). 
+The objective of the project is to use the manipulator to pick the objects in sequence and to position them on 
+a different stand according to a specified order (final stand). 
+A calibrated 3D sensor is used to locate the different objects and to detect their position in the initial stand.
+
+Our group decided to divide this complex and articolated project in two subpart: 
+- Computer Vision Part
+- Motion Planning Part
+
+COMPUTER VISION PART OF UR5 PROJECT
+In this first part of the project the goal is to create a precise AI that is able to detect and classify all the 
+mega-blocks in the environment. 
+As ibm report:
+" Machine vision is a field of artificial intelligence (AI) that allows computers and systems to derive meaningful information 
+  from digital images, videos and other visual inputs - and take action or report on the basis of that information. 
+  If AI allows computers to think, computer vision allows them to see, observe and understand."
+our goal is to train a model with a dataset of images and then use this "intellingent program" to detect objects.
+
+We have decided to use YOLO v8.
+Ultralytics YOLOv8 is a cutting-edge, state-of-the-art (SOTA) model that builds upon the success of previous YOLO 
+versions and introduces new features and improvements to further boost performance and flexibility. 
+YOLOv8 is designed to be fast, accurate, and easy to use, making it an excellent choice for a wide range of object 
+detection and tracking, instance segmentation, image classification and pose estimation tasks.
+YOLO has its convention, so firstly, we have analyzed dataset given by Sebe and adapt it to YOLO standard.
+His dataset is organized in three subfolder, each of one contain a series of scene with different composition of situation.
+For each situation, datasets gives:
+  1) image.jpeg
+  2) bbox_image.jpg
+  3) vertices_image.jpg
+  4) depth_image.jpg
+  5) depth_plane_image.jpg
+  6) annotation.json 
+
+Labels for this format should be exported to YOLO format with one *.txt file per image. 
+If there are no objects in an image, no *.txt file is required. 
+The *.txt file should be formatted with one row per object in class x_center y_center width height format. 
+Box coordinates must be in normalized xywh format (from 0 to 1). 
+If your boxes are in pixels, you should divide x_center and width by image width, and y_center and height by image height. 
+Class numbers should be zero-indexed (start with 0).
+
+
+
+
+
+
+
+Here i link all the link which were useful for us:
+- https://www.ibm.com/it-it/topics/computer-vision
+- https://docs.ultralytics.com
+- https://roboflow.com
+- https://opencv.org
+- https://www.youtube.com/watch?v=Z-65nqxUdl4
+- https://numpy.org
+- https://www.cvat.ai
+- https://www.datacamp.com/tutorial/complete-guide-data-augmentation
+- https://www.v7labs.com/blog/data-augmentation-guide
+- https://www.w3schools.com/js/js_json_intro.asp
+- https://docs.python.org/3/library/os.html
+- https://www.youtube.com/watch?v=eWRfhZUzrAc&list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB&index=1
+- https://www.youtube.com/watch?v=VyWAvY2CF9c
+- https://www.youtube.com/watch?v=cPOtULagNnI
+- https://pysource.com/2020/04/02/train-yolo-to-detect-a-custom-object-online-with-free-gpu/
+- https://colab.research.google.com/?hl=it
+- https://www.media.mit.edu/pia/Research/deepview/exif.html
+- https://it.wikipedia.org/wiki/Exchangeable_image_file_format
+- https://www.sciencedirect.com/topics/computer-science/exchangeable-image-file-format
+- https://github.com/ultralytics/ultralytics
