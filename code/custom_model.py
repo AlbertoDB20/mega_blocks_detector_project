@@ -13,29 +13,30 @@ import cv2
 
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
-path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"  
+path_to_project_folder = "/Users/alberto/Desktop"       # for the other good model: "/Users/alberto/ROBOTICS/autovelox_detector_project" 
 
 # path to best.pt file to refer for prediction   --> CHANGE TRAIN# FOLDER
-path_best_model = path_to_project_folder + "/runs/detect/final_training/best.pt"
+path_best_model = path_to_project_folder + "/FINAL_RUNS/detect/train/weights/best.pt"             # for the other good model "/runs/detect/final_training/best.pt"
 
 path_to_video = 'insert here'
-path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/img7.jpg'
-path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_5.jpg'
+path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/0.jpg'
+path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test'
 
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)
 model = YOLO (path_best_model)       # build new model from scratch
 
 # creating a object
-image = cv2.imread(path_to_test_image)
+image = cv2.imread(path_to_my_image)
 
 h, w, c = image.shape
 size = (h, w)
 
+
 # Run inference on the source  (PREDICT MODE)
-results = model.predict(source=path_to_my_image, show=True, conf=0.4, save=True, imgsz = size)       
+results = model.predict(source=path_to_my_image, show=True, conf=0.4, save=False)       
     # source = path --> takes that specific video of image path.
-    # source = 1    --> use the webcam of the pc
+    # source = 1    --> use the webcam of the pc, 0 to the external camera
     # show = True   --> shows webcam view
     # conf = 0.3    --> object confidence threshold for detection
     # save = True   --> save predicted images and videos
