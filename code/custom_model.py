@@ -10,6 +10,7 @@ From that training, it is possible to choose best.pt or last.pt model in path
 
 from ultralytics import YOLO
 import cv2
+import os
 
 # ID of megablocks
 id0 = "X1-Y1-Z2"
@@ -76,19 +77,18 @@ class bb:
 
 
 
-# CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
-path_to_project_folder = "/Users/alberto/Desktop"       # for the other good model: "/Users/alberto/ROBOTICS/autovelox_detector_project" 
-
-# path to best.pt file to refer for prediction   --> CHANGE TRAIN# FOLDER
-path_best_model = path_to_project_folder + "/FINAL_RUNS/detect/train/weights/best.pt"             # for the other good model "/runs/detect/final_training/best.pt"
-
 path_to_video = 'insert here'
 path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/scene0.jpg'
 path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test'
 
+# get the current working directory
+current_working_directory = os.getcwd()
+
+path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"
+
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)
-model = YOLO (path_best_model)       # build new model from scratch
+model = YOLO (path_best_into_project)       # build new model from scratch
 
 
 
