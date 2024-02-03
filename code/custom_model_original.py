@@ -22,7 +22,7 @@ id8 = 'X1-Y4-Z2'
 id9 = 'X2-Y2-Z2'
 id10 = 'X2-Y2-Z2-FILLET'
 
-ABSOLUTE_VALUE = True   # if True -->  xc, yc, w, h are expressed in pixel, otherwise are relative.
+ABSOLUTE_VALUE = True                   # if True -->  xc, yc, w, h are expressed in pixel, otherwise are relative.
 
 class bb:
     def __init__(self, ID, prec, xc, yc, w, h):
@@ -74,16 +74,17 @@ class bb:
 
 
 
-#path_to_video = 'insert here'
-#path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/scene0.jpg'
-#path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test'
+path_to_video = 'insert here'
+path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/scene0.jpg'
+path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test'
 
 # get the current working directory
 current_working_directory = os.getcwd()
+
 path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)
-model = YOLO (path_best_into_project)   # build new model from scratch
+model = YOLO (path_best_into_project)       # build new model from scratch
 
 
 
@@ -122,18 +123,19 @@ Set to True or false variable ABSOLUTE_VALUE if you want to have relative or abs
 
 
 
-def make_prediction(img):
+def make_prediction(image):
     # creating a object
+    img = cv2.imread(image)
     height, width, c = img.shape
     h = int(height)
     w = int(width)
 
-    results = model.predict(source=img, show=False, conf=0.6, save=False)
+    results = model.predict(source=image, show=True, conf=0.6, save=False)
     bbs = []
     i = 0
     for result in results:
-        #print("\n")
-        boxes = result.boxes.numpy()   # Boxes object for bbox outputs
+        print("\n")
+        boxes = result.boxes.numpy()  # Boxes object for bbox outputs
         for box in boxes:
             cls = box.cls
             confidence = box.conf
@@ -143,14 +145,13 @@ def make_prediction(img):
                 bbs.append(bb(cls, prec, values[0][0], values[0][1], values[0][2], values[0][3]))
             else:
                 bbs.append(bb(cls, prec, values[0][0]/w, values[0][1]/h, values[0][2]/w, values[0][3]/h))
-            #bbs[i].print()
+            bbs[i].print()
             i += 1
     return bbs
 
 
 
-#zed = cv2.imread("/home/alex/ros_ws/src/ur5_lego/src/task_planner/zed.png", cv2.IMREAD_COLOR)
-#make_prediction(zed)
+list_of_bb = make_prediction(path_to_my_image)
 
 
 
