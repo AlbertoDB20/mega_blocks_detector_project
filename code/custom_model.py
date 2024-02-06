@@ -78,17 +78,24 @@ class bb:
 
 
 path_to_video = 'insert here'
-path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/scene0.jpg'
-path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test'
+path_to_my_desktop = '/Users/alberto/Desktop/prova1.jpg'
+path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_676.jpg'
+path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/prova_per_bosco.jpg'
 
 # get the current working directory
 current_working_directory = os.getcwd()
 
 path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"
 
+path_100 = current_working_directory + "/runs_test/detect/final_training/best.pt"
+
+
+
+
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)
 model = YOLO (path_best_into_project)       # build new model from scratch
+#model = YOLO (path_100)
 
 
 
@@ -134,7 +141,7 @@ def make_prediction(image):
     h = int(height)
     w = int(width)
 
-    results = model.predict(source=image, show=True, conf=0.6, save=False)   
+    results = model.predict(source=image, imgsz=(h,w), show=True, conf=0.7, save=True)   
     bbs = []  
     i = 0
     for result in results:
