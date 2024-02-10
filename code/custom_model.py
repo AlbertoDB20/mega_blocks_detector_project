@@ -179,6 +179,6 @@ def make_prediction(image):
 
 
 ## necessary to have an openCV image to input to make_prediction
-img_in_cv2_format = cv2.imread(path_to_my_desktop)
+img_in_cv2_format = cv2.imread(path_to_my_image)
 ## test make_prediction function.
 make_prediction(img_in_cv2_format)
