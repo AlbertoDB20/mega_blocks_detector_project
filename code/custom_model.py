@@ -114,20 +114,12 @@ path_to_my_image = '/Users/alberto/Desktop/img_from_alex/img3.jpg'
 # get the current working directory
 current_working_directory = os.getcwd()
 
+# path_model
+path_model = current_working_directory + "/runs/detect/train/weights/best.pt"
 
-#____________   MODEL AVAILABLE ________________
-path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"           # 150 epochs with R_RBW_RL_AUGMENTATION 
-path_100 = current_working_directory + "/runs_test/detect/final_training/best.pt"                   # 100 epochs with only images of Sebe dataset
-path_139 = "/Users/alberto/Desktop/139_epo/best.pt"  
-path_new_model = "/Users/alberto/Desktop/MODEL_200/FINAL_200/runs/detect/train/weights/best_200.pt"
+# Load a pre-trained YOLOv8n model (choose the best.pt file to have best performances)
+model = YOLO (path_model)
 
-
-
-# Load a pre-trained YOLOv8n model (choose the best.pt file)
-#model = YOLO (path_best_into_project)       # build new model from scratch
-#model = YOLO (path_100)
-#model = YOLO (path_139)
-model = YOLO (path_new_model)
 
 
 def make_prediction(image):
