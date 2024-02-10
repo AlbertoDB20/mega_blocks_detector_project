@@ -1,4 +1,5 @@
-path: /Users/alberto/ROBOTICS/autovelox_detector_project/data
+#path: /Users/alberto/ROBOTICS/autovelox_detector_project/data
+path: /Users/alberto/Desktop/FINAL_DATASET/TWO_ASSIGNS_AUG/data
 train: images/train
 val: images/val
 test: images/test

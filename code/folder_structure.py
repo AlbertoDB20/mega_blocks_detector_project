@@ -83,6 +83,7 @@ string16 = "\t\t\t\tNOW YOU HAVE TO ANNOTATE THE SQUARED IMAGES ALREADY FRAMED.\
 
 # function to create README.md given the path
 def create_readme(path, readme_content):
+   
    # Scrivi il contenuto nel file README.txt
    readme_path = os.path.join(path, 'README.md')
    if os.path.isfile(readme_path):

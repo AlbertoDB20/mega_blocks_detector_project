@@ -34,7 +34,6 @@ from tqdm import tqdm
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM
 path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
 
-
 # path for subfolder: DO NOT MODIFY THIS!
 path_to_assigns_folder = path_to_project_folder + "/assigns"
 path_to_data_folder = path_to_project_folder + "/data"

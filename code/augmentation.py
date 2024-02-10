@@ -29,7 +29,8 @@ import shutil
 
 
 # CHANGE ONLY THIS FOLDER, ACCORDING TO THE STRUCTURE OF YOUR FILESYSTEM, AND THE PREFIX, w, h
-path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
+#path_to_project_folder = "/Users/alberto/ROBOTICS/autovelox_detector_project"              #       <---------      MODIFY HERE
+path_to_project_folder = "/Users/alberto/Desktop/db" 
 prefix_r = "r"
 prefix_rbw = "rbw"
 prefix_rl = "rl"

@@ -1,3 +1,22 @@
+##
+# @mainpage Predict with fine-tuned model
+#
+# @section Description
+# An example Python program demonstrating how to use predict function for
+# generating inference on image with fine-tuned model 
+#
+# @section Notes
+# - use best.pt model that can be found into runs/detect/train/weight folder if you want to use weights for best performances detection 
+#
+
+
+##
+# @file   fine_tuning.py
+# @brief  Using the yolov8n.pt pre-trained model, this script allow to fine-tune the model.
+# @date   10/11/2023
+# @author Alberto Dal Bosco
+#
+
 '''
     Script for fine-tuning in python using ultralytics YOLO v8 pre-trained model
     We choose YOLOv8n because is the lightest one, but it is also possible to chose another version of YOLOv8
@@ -69,4 +88,4 @@ else:
 model = YOLO ("yolov8n.yaml")       # build new model from scratch
 
 # Use the model
-result = model.train(data = path_config, epochs=100, imgsz=640, device = mps_device)       # train the model
+result = model.train(data = path_config, epochs=200, imgsz=640)       # train the model

@@ -1,15 +1,30 @@
-'''
-Custom trained ultralytics YOLO v8 model to be run to detect live inference on webcam
-Refer to the model trained in fine_tuning.py script.
-From that training, it is possible to choose best.pt or last.pt model in path
-        /__project_name__/runs/detect/train__num__/weights
-'''
+##
+# @mainpage Predict with fine-tuned model
+#
+# @section Description
+# An example Python program demonstrating how to use predict function for
+# generating inference on image with fine-tuned model 
+#
+# @section Notes
+# - use best.pt model that can be found into runs/detect/train/weight folder if you want to use weights for best performances detection 
+#
 
+
+##
+# @file custom_model.py
+# @brief Using the best.pt model fine-tuned model, this script allow making predictions given an image.
+# @date   10/11/2023
+# @author Alberto Dal Bosco
+#
+
+# Imports
 from ultralytics import YOLO
 import cv2
 import os
 
-# ID of megablocks
+
+# Global Constants
+## ID of megablocks
 id0 = "X1-Y1-Z2"
 id1 = 'X1-Y2-Z1'
 id2 = 'X1-Y2-Z2'
@@ -22,10 +37,24 @@ id8 = 'X1-Y4-Z2'
 id9 = 'X2-Y2-Z2'
 id10 = 'X2-Y2-Z2-FILLET'
 
+## switch to absolute value bb outputs
 ABSOLUTE_VALUE = True   # if True -->  xc, yc, w, h are expressed in pixel, otherwise are relative.
 
 class bb:
+    """! The bounding box base class.
+    Defines the base class for all the object detected
+    """
+
     def __init__(self, ID, prec, xc, yc, w, h):
+        """! The bounding box base class initializer.
+        @param ID  The ID of the object detected.
+        @param prec  The precision of the object detected.
+        @param xc  The x coordinate of the center of the bb of the object detected.
+        @param yc  The y coordinate of the center of the bb of the object detected.
+        @param w  The width of the bb of the object detected.
+        @param h  The height of the bb of the object detected.
+        @return  None
+        """
         self.ID = ID
         self.prec = prec
         self.xc = xc
@@ -34,6 +63,9 @@ class bb:
         self.h = h
 
     def convert_id_to_num(self):
+        """! Function that covert litteral ID to number.
+        @return num numerical ID or print error
+        """
         if self.ID == id0:
             return 0
         elif self.ID == id1:
@@ -61,6 +93,9 @@ class bb:
             exit()
 
     def print(self):
+        """! function to print on stdout bounding box information.
+        @return None
+        """
         print("\nBB")
         print("   class:     " + str(int(self.ID)))
         print("   precision: " + str(self.prec) + " %")
@@ -73,40 +108,40 @@ class bb:
         print("\n")
 
 
-
-path_to_video = 'insert here'
-path_to_my_desktop = '/Users/alberto/Desktop/prova1.jpg'
-path_to_test_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/data/images/test/rbw_img_676.jpg'
-path_to_my_image = '/Users/alberto/ROBOTICS/autovelox_detector_project/assigns/my_photo/prova_per_bosco.jpg'
+## define path useful for testing 
+path_to_my_image = '/Users/alberto/Desktop/img_from_alex/img3.jpg'
 
 # get the current working directory
 current_working_directory = os.getcwd()
-path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"
-
-path_100 = current_working_directory + "/runs_test/detect/final_training/best.pt"
 
 
+#____________   MODEL AVAILABLE ________________
+path_best_into_project = current_working_directory + "/runs/detect/train/weights/best.pt"           # 150 epochs with R_RBW_RL_AUGMENTATION 
+path_100 = current_working_directory + "/runs_test/detect/final_training/best.pt"                   # 100 epochs with only images of Sebe dataset
+path_139 = "/Users/alberto/Desktop/139_epo/best.pt"  
+path_new_model = "/Users/alberto/Desktop/MODEL_200/FINAL_200/runs/detect/train/weights/best_200.pt"
 
 
 
 # Load a pre-trained YOLOv8n model (choose the best.pt file)
-model = YOLO (path_best_into_project)       # build new model from scratch
+#model = YOLO (path_best_into_project)       # build new model from scratch
 #model = YOLO (path_100)
+#model = YOLO (path_139)
+model = YOLO (path_new_model)
 
 
-
-'''
-This is the function to make the prediction given a cv2 image.
-    input:
-        * cv2.image of zed camera
-        * other possible parameters
-
-    output:   list of class of bb    [bb0, bb1, .... , bbn].
-                |
-                '--------> this list has length n, where n is the number of bb in the image passed to the function.
-                '--------> bb is a class (structured type) that contains in order the following value: ID, xc, yc, w, h
-
-        N.B.:  each bb constains following information:
+def make_prediction(image):
+    """! The function that make effective prediction given the image based on the yolo v8 fine-tuned model create
+    @brief This function computes size of given image and then uses yolo v8 model.predict pre-defined function that run inference on the source, to which I pass following values defined by real world experience:
+                * source = path --> takes that specific video of image path.
+                * source = 1    --> use the webcam of the pc, 0 to the external camera
+                * show = True   --> shows webcam view
+                * conf = 0.3    --> object confidence threshold for detection
+                * save = True   --> save predicted images and videos)
+                * iou_thres = 0.7   --> intersection over union threshold value
+            Set to True or false variable ABSOLUTE_VALUE if you want to have relative or absolute measurement
+    
+            N.B.:  each bb constains following information:
             * ID --> from 0 to 10
             * prec --> from 0 to 100 (it is a percentage)
             * xc --> from 0 to x size of image (x coordinate of center of bounding box with absolute coordinate)
@@ -114,33 +149,20 @@ This is the function to make the prediction given a cv2 image.
             * w --> from 0 to x size of bounding box (width of bounding box with absolute coordinate)
             * h --> from 0 to y size of bounding box (height of bounding box with absolute coordinate)
 
-        N.B.:   print(type(list_of_bb[0]))        --->        <class '__main__.bb'>
-
-This function computes size of given image and then uses yolo v8 model.predict pre-defined function that run inference on the source, 
-to which I pass following values defined by real world experience:
-    * source = path --> takes that specific video of image path.
-    * source = 1    --> use the webcam of the pc, 0 to the external camera
-    * show = True   --> shows webcam view
-    * conf = 0.3    --> object confidence threshold for detection
-    * save = True   --> save predicted images and videos)
-    * iou_thres = 0.7   --> intersection over union threshold value         #TODO: check this!!!
-
-Set to True or false variable ABSOLUTE_VALUE if you want to have relative or absolute measurement
-'''
-
-
-
-def make_prediction(img):
+    @param image The openCV image from the camera view. This has to be .jpg extentions
+    @return bbs It's a list of bounding box [bb0, bb1, .... , bbn]
+    
+    """
     # creating a object
-    height, width, c = img.shape
+    height, width, channel = image.shape
     h = int(height)
     w = int(width)
 
-    results = model.predict(source=image, imgsz=(h,w), show=True, conf=0.7, save=True)   
+    results = model.predict(source=image, imgsz=(h,w), show=True, conf=0.85, save=True)   
     bbs = []  
     i = 0
     for result in results:
-        #print("\n")
+        print("\n")
         boxes = result.boxes.numpy()   # Boxes object for bbox outputs
         for box in boxes:
             cls = box.cls
@@ -151,15 +173,12 @@ def make_prediction(img):
                 bbs.append(bb(cls, prec, values[0][0], values[0][1], values[0][2], values[0][3]))
             else:
                 bbs.append(bb(cls, prec, values[0][0]/w, values[0][1]/h, values[0][2]/w, values[0][3]/h))
-            #bbs[i].print()
+            bbs[i].print()
             i += 1
     return bbs
 
 
-
-#zed = cv2.imread("/home/alex/ros_ws/src/ur5_lego/src/task_planner/zed.png", cv2.IMREAD_COLOR)
-#make_prediction(zed)
-
-
-
-# TODO: intersection over union in case of Bounding box overlapping
+## necessary to have an openCV image to input to make_prediction
+img_in_cv2_format = cv2.imread(path_to_my_desktop)
+## test make_prediction function.
+make_prediction(img_in_cv2_format)
