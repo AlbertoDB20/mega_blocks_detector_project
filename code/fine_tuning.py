@@ -1,69 +1,46 @@
-##
-# @mainpage Predict with fine-tuned model
-#
-# @section Description
-# An example Python program demonstrating how to use predict function for
-# generating inference on image with fine-tuned model 
-#
-# @section Notes
-# - use best.pt model that can be found into runs/detect/train/weight folder if you want to use weights for best performances detection 
-#
+"""!@package documentation
+@brief Script for fine-tuning in python using ultralytics YOLO v8 pre-trained model
+@date   1/12/2023
+@author Alberto Dal Bosco
+@section Notes
+We choose YOLOv8n because is the lightest one, but it is also possible to chose another version of YOLOv8
 
+TO DO BEFORE COMPILING:
+pip install ultralytics
+pip install torch
 
-##
-# @file   fine_tuning.py
-# @brief  Using the yolov8n.pt pre-trained model, this script allow to fine-tune the model.
-# @date   10/11/2023
-# @author Alberto Dal Bosco
-#
+FROM REFERENCE we have:
 
-'''
-    Script for fine-tuning in python using ultralytics YOLO v8 pre-trained model
-    We choose YOLOv8n because is the lightest one, but it is also possible to chose another version of YOLOv8
+    from ultralytics import YOLO
 
-    TO DO BEFORE COMPILING:
-    pip install ultralytics
-    pip install torch
+    # Load a YOLOv8 model from a pre-trained weights file
+    model = YOLO('yolov8n.pt')
 
-    FROM REFERENCE we have:
+    # Run MODE mode using the custom arguments ARGS (guess TASK)
+    model.MODE(ARGS)
 
-        from ultralytics import YOLO
+Where:
 
-        # Load a YOLOv8 model from a pre-trained weights file
-        model = YOLO('yolov8n.pt')
+TASK (optional) is one of (detect, segment, classify, pose)
+MODE (required) is one of (train, val, predict, export, track)
+ARGS (optional) are arg=value pairs like imgsz=640 that override defaults.
+Default ARG values are defined on this page from the cfg/defaults.yaml file.
 
-        # Run MODE mode using the custom arguments ARGS (guess TASK)
-        model.MODE(ARGS)
+I also check if MPS is available to be sure to use Apple Neural Engine for M1 processor.
+    [ Apple's Neural Engine (ANE) is the marketing name for a group of specialized 
+    cores functioning as a neural processing unit (NPU) dedicated to the acceleration 
+    of artificial intelligence operations and machine learning tasks. ]
+    source: Apple
 
+N.B.:
+TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
 
-    Where:
+The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
+The second one is faster and less computational for the device, but needs stable internet connection!
 
-    TASK (optional) is one of (detect, segment, classify, pose)
-    MODE (required) is one of (train, val, predict, export, track)
-    ARGS (optional) are arg=value pairs like imgsz=640 that override defaults.
-    Default ARG values are defined on this page from the cfg/defaults.yaml file.
-
-    I also check if MPS is available to be sure to use Apple Neural Engine for M1 processor.
-        [ Apple's Neural Engine (ANE) is the marketing name for a group of specialized 
-        cores functioning as a neural processing unit (NPU) dedicated to the acceleration 
-        of artificial intelligence operations and machine learning tasks. ]
-        source: Apple
-
-
-    N.B.:
-    TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
-    
-    The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
-    The second one is faster and less computational for the device, but needs stable internet connection!
-
-    
-    AFTER:
-    custom_model.py to use the trained model in real environment
-        
-    author: Alberto Dal Bosco
-    date: 1/12/2023 
-
-'''
+AFTER:
+custom_model.py to use the trained model in real environment
+"""
 
 
 from ultralytics import YOLO

@@ -1,21 +1,12 @@
-##
-# @mainpage Predict with fine-tuned model
-#
-# @section Description
-# An example Python program demonstrating how to use predict function for
-# generating inference on image with fine-tuned model 
-#
-# @section Notes
-# - use best.pt model that can be found into runs/detect/train/weight folder if you want to use weights for best performances detection 
-#
-
-
-##
-# @file custom_model.py
-# @brief Using the best.pt model fine-tuned model, this script allow making predictions given an image.
-# @date   10/11/2023
-# @author Alberto Dal Bosco
-#
+"""
+@file custom_model_ros.py
+@brief A Python program demonstrating how to use predict function for generating inference on image with fine-tuned model
+@section Description
+@date   10/11/2023
+@author Alberto Dal Bosco
+@section Notes
+- use best.pt model that can be found into runs/detect/train/weight folder if you want to use weights for best performances detection
+"""
 
 # Imports
 from ultralytics import YOLO
@@ -24,7 +15,7 @@ import os
 
 
 # Global Constants
-## ID of megablocks
+# ID of megablocks
 id0 = "X1-Y1-Z2"
 id1 = 'X1-Y2-Z1'
 id2 = 'X1-Y2-Z2'
@@ -138,7 +129,7 @@ class bb:
         print("\n")
 
 
-## define path useful for testing 
+# define path useful for testing 
 path_to_my_image = '/Users/alberto/Desktop/img_from_alex/img3.jpg'
 
 # get the current working directory
@@ -180,7 +171,7 @@ def make_prediction(image):
     h = int(height)
     w = int(width)
 
-    results = model.predict(source=image, imgsz=(h,w), show=True, conf=0.85, save=True)   
+    results = model.predict(source=image, imgsz=(h,w), show=True, conf=0.7, save=True)   
     bbs = []  
     i = 0
     for result in results:
@@ -200,7 +191,7 @@ def make_prediction(image):
     return bbs
 
 
-## necessary to have an openCV image to input to make_prediction
+# necessary to have an openCV image to input to make_prediction
 #!!! img_in_cv2_format = cv2.imread(path_to_my_image)
-## test make_prediction function.
+# test make_prediction function.
 #!!! make_prediction(img_in_cv2_format)

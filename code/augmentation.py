@@ -1,24 +1,26 @@
-'''
-    SCRIPT FOR DATA AUGMENTATION
-    This script resize and convert to black and white and brightness each .jpg image in the three folder val, train and test 
-    adding given prefixs.
-    At the same time it takes all the .txt annotation files and does exactly the same renaming for each file, to
-    have correspondence between images and labels.
-    This procedure is applied for both val, train and test.
-    I added a progress bar to help the user understand how far the conversion has reached.
+"""
+@file augmentation.py
+@brief This python script augment all the images, with different types of filters.
+@date   22/11/2023
+@author Alberto Dal Bosco
+@section Notes
+This script resize and convert to black and white and brightness each .jpg image in the three folder val, train and test 
+adding given prefixs.
+At the same time it takes all the .txt annotation files and does exactly the same renaming for each file, to
+have correspondence between images and labels.
+This procedure is applied for both val, train and test.
+I added a progress bar to help the user understand how far the conversion has reached.
     
-    AFTER:  
-    fine_tuning.py to train the newly created dataset
-        OR
-    TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
+AFTER:  
+fine_tuning.py to train the newly created dataset
+    OR
+TrainYolov8CustomDataset.ipynb on google Colab selecting 'Modifica' --> 'Impostazioni blocco Note' --> 'Acceleratore Hardware' --> T4 GPU --> 'Salva'
     
-    The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
-    The second one is faster and less computational for the device, but needs stable internet connection!
+The first choice train cNN on your device (VERY VERY SLOW and HEAVY)
+The second one is faster and less computational for the device, but needs stable internet connection!
+"""
 
-    author: Alberto Dal Bosco 
-    date: 22/11/2023
-'''
-
+# Imports
 import cv2
 import os
 from tqdm import tqdm  # Assicurati di aver installato la libreria tqdm: pip install tqdm
@@ -60,6 +62,15 @@ path_to_frame_folder = path_to_videos_folder + "/frame"
 
 
 def resize_and_convert(input_path, output_path_r, output_path_rbw, output_path_rl, width, height, delete_original=False):
+    """! Function that resize and convert image passed
+    @param input_path path of the input folder 
+    @param output_path_r path of the output folder for resized images 
+    @param output_path_rbw path of the output folder for the black/white images 
+    @param output_path_rl path of the output folder for the light_filtered images 
+    @param width width of the image
+    @param height height of the image
+    @param delete_original boolean value (defaul = False) that allow deleting original (non filtered) image
+    """     
     try:
         # Load the image
         img = cv2.imread(input_path)
@@ -95,6 +106,15 @@ def resize_and_convert(input_path, output_path_r, output_path_rbw, output_path_r
 
 
 def resize_and_convert_in_folder(folder_path, width, height, delete_original=False, rename=False, prefix_rbw="rbw", prefix_rl="rl"):
+    """! Function that resize and convert in .jpg format the images into the folder passed
+    @param folder_path path of the folder that contains all the images
+    @param width width of the image 
+    @param height height of the image 
+    @param delete_original boolean value (defaul = False) that allow deleting original (non filtered) image 
+    @param rename boolean that allow to rename the file
+    @param prefix_rbw prefix for resized black and white filtered images
+    @param prefix_rl prefix for light filtered images
+    """ 
     try:
         # Ensure that the folder path ends with '/'
         if not folder_path.endswith('/'):
@@ -138,6 +158,13 @@ def resize_and_convert_in_folder(folder_path, width, height, delete_original=Fal
 
 # Function to rename text files in a folder
 def rename_txt_files(folder_path, delete_original=False, prefix_r="r", prefix_rbw="rbw", prefix_rl="rl"):
+    """! Function that rename txt files
+    @param folder_path path of the folder that contains all the images
+    @param delete_original boolean value (defaul = False) that allow deleting original (non filtered) image 
+    @param prefix_r prefix for resized images
+    @param prefix_rbw prefix for resized black and white filtered images
+    @param prefix_rl prefix for light filtered images
+    """ 
     try:
         # Ensure that the folder path ends with '/'
         if not folder_path.endswith('/'):

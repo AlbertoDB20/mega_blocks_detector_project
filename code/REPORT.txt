@@ -12,8 +12,8 @@ a different stand according to a specified order (final stand).
 A calibrated 3D sensor is used to locate the different objects and to detect their position in the initial stand.
 
 Our group decided to divide this complex and articolated project in two subpart: 
-- Computer Vision Part
-- Motion Planning Part
+- Computer Vision Part (DETECTION)
+- Motion Planning Part  (MOTION)
 
 COMPUTER VISION PART OF UR5 PROJECT
 In this first part of the project the goal is to create a precise AI that is able to detect and classify all the 

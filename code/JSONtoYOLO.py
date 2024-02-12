@@ -1,30 +1,27 @@
-# Python program to read
-# json file
-
-
-'''
-    SEBE to YOLO script
-    This script takes in input Sebe dataset saved in assigns folder and:
-        1) move and rename each images in data/images folder
-        2) read JSON file for each images, elaborate it computing YOLO annotations and save it in renamed .txt 
+"""
+@file JSONtoYOLO.py
+@brief A Python program that convert Sebe dataset to YOLO compatible dataset
+@date   11/11/2023
+@author Alberto Dal Bosco
+@section Notes
+This script takes in input Sebe dataset saved in assigns folder and:
+    1) move and rename each images in data/images folder
+    2) read JSON file for each images, elaborate it computing YOLO annotations and save it in renamed .txt 
            extended file in data/labels folder
 
-    LABEL STRUCTURE: 
-    Labels for this format should be exported to YOLO format with one *.txt file per image. 
-    If there are no objects in an image, no *.txt file is required. 
-    The *.txt file should be formatted with one row per object in class x_center y_center width height format. 
-    Box coordinates must be in normalized xywh format (from 0 to 1). 
-    If your boxes are in pixels, you should divide x_center and width by image width, and y_center and height by image height. 
-    Class numbers should be zero-indexed (start with 0).
+LABEL STRUCTURE: 
+Labels for this format should be exported to YOLO format with one *.txt file per image. 
+If there are no objects in an image, no *.txt file is required. 
+The *.txt file should be formatted with one row per object in class x_center y_center width height format. 
+Box coordinates must be in normalized xywh format (from 0 to 1). 
+If your boxes are in pixels, you should divide x_center and width by image width, and y_center and height by image height. 
+Class numbers should be zero-indexed (start with 0).
 
-    AFTER: 
-    split_dataset.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
+AFTER: 
+split_dataset.py to randomic split images and labels (set to True SPLIT flag) into three subfolder.
+"""
 
-    author: Alberto Dal Bosco 
-    date: 2/12/2023
 
-'''
- 
 import json
 import os
 import shutil
@@ -97,6 +94,9 @@ width = 1024
 
 
 def convert_id_to_num(id):
+    """! Function that covert litteral IDs to numbers.
+        @return num numerical ID or print error
+    """
     if id == id0:
         return 0
     elif id == id1:
@@ -125,7 +125,17 @@ def convert_id_to_num(id):
 
 
 
-def sebe_to_yolo(ulc, drc, w, h):                
+def sebe_to_yolo(ulc, drc, w, h):  
+    """! Function that convert Sebe annotations to Yolo compatible ones 
+    @param ulc up left corner of the bb 
+    @param drc down right corner of the bb
+    @param w width of the image
+    @param h height of the image
+    @return x_center_normalized x coordinate normalized of the center of bb
+    @return y_center_normalized y coordinate normalized of the center of bb
+    @return w_bb_normalized width normalized of the bb
+    @return h_bb_normalized height normalized of the bb
+    """              
     #x_ulc, y_ulc, x_drc, y_drc, x_center_normalized, y_center_normalized, h_bb_normalized, w_bb_normalized = 0
     x_ulc = ulc[0]
     y_ulc = ulc[1]
@@ -148,6 +158,11 @@ def sebe_to_yolo(ulc, drc, w, h):
 
 
 def find_extreme_coordinates(lista_coordinate):
+    """! Function that find 2D bb given 3D bb
+    @param lista_coordinate list of all the 3D coordinates of a bb
+    @return punto_alto_sinistra it is the up left corner of the 3D bb
+    @return punto_basso_destra it is the down right corner of the 3D bb
+    """
     if not lista_coordinate:
         return None, None
 
@@ -170,8 +185,12 @@ def find_extreme_coordinates(lista_coordinate):
 
 
 
-# function to create .txt annotation file in the form:________img_#num_label.txt_________ 
 def create_txt_annotation(path_json, path_txt_folder):
+    """! Function that create txt annotation in the form img_#num_label.txt
+    @param path_json path in which is saved the json file
+    @param path_txt_folder path in which has to be saved converted annotation file with the extension .txt
+    @return None
+    """
     global cont_lab
     new_file_name = img + str(cont_lab) + ".txt"                # img_#num_label.txt
 
@@ -207,6 +226,11 @@ def create_txt_annotation(path_json, path_txt_folder):
 
 
 def save_img(img_file_path, path_to_images):
+    """! Function to save image in .jpg extension
+    @param img_file_path path of the image
+    @param path_to_images path in which save the images
+    @return None
+    """
     global cont_img
     # Modify the file name as desired (e.g., add a prefix)
     new_file_name = img + str(cont_img) + '.jpg'                   # img_#num.jpeg
@@ -258,12 +282,3 @@ li = len(img_files)
 if (lj != li):
     print("ERRORE: DIMESIONE JSON FILES {lj} DIVERSA DA IMG FILES {li}")
     exit()
-
-
-#TODO: cambiare nome progetto
-#TODO: rendere collabolatori Posky, Fede e Alex
-#TODO: guardare fine-tuning di Elia, per capire cosa posso fare di meglio
-
-# kikalore2002@gmail.com
-# 
-

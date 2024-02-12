@@ -1,0 +1,47 @@
+/**
+ * @mainpage
+ *
+ * @section intro Introduction
+ *
+ * Welcome to documentation of the ur5_lego project, this contains all the necessary functions, variables and instructions for the use and the installation.
+ *
+ * @section features Features
+ *
+ * The following script offers the following functionality
+ * - modify Sabe's Dataset and adapt it to YOLO format
+ * - fine-tuning of pre-trained YOLO v8 model based on custom datasets 
+ * - predictions based on best.pt model
+ *
+ * @section installation Installation
+ *
+ * Per installare il Progetto Python, seguire i passaggi seguenti:
+ * - Step 1: pip install ultralytics
+ *
+ * @section structure Code structure
+ *
+ * The structure of the CV project is the following:
+ * - `mega_blocks_project/`: root path.
+ *   - `folder_structure.py`: create necessary folder
+ *   - `JSONtoYOLO.py`: convert dataset
+ *   - `split_dataset.py`: split images and labels into sub-folders
+ *   - `augmentation.py`: augment images (resize, light and bw filters)
+ *   - `fine_tuning.py`: adjust weights of the model
+ *   - `custom_model.py`: make predictions
+ *   - `custom_model_ros.py`: same as the previous, but adapt for ROS usage
+ *   - `resume_training.py`: script to resume blocked training
+ *
+ * @section reference References
+ *
+ * - [Python Doc](https://docs.python.org/3/)
+ * - [Doxygen Doc](https://www.doxygen.nl/index.html)
+ * - [Ultralytics Doc](https://docs.ultralytics.com)
+ *
+ * @section license Licence
+ *
+ * This project has no special licence
+ *
+ * @section contact Contact
+ *
+ * For questions, bugs or suggestions, please refer to Alberto at alberto.dalbosco@studenti.unitn.it
+ *
+ */

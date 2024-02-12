@@ -1,39 +1,33 @@
-'''
-
-   ________________________________________FIRST SCRIPT TO BE EXECUTED______________________________________
-
-
-   PYTHON SCRIPTS TO CREATE ALL THE FOLDER NECESSARY FOR THE PROJECTS
-   This script made all us. 
-   It creates all the necessary folder for the project, each of one contains a personal README.md file.
-   PAY ATTENTION:
-    --> Modify only the path_to_project_folder, selecting the folder in which you commonly store the project 
-    --> then it is automatic the creation of the folder
+"""
+@file folder_structure.py
+@brief A Python program that creates all the folder necessary for the project 
+@date   10/11/2023
+@author Alberto Dal Bosco
+@section Notes
+It creates all the necessary folder for the project, each of one contains a personal README.md file.
+PAY ATTENTION:
+   --> Modify only the path_to_project_folder, selecting the folder in which you commonly store the project 
+   --> then it is automatic the creation of the folder
    
-   If you have just images for the datasets, save it in the images folder.
-   Moreover, if you have video in which extracting frames, save it in path_to_videos_folder according to their extensions.
+If you have just images for the datasets, save it in the images folder.
+Moreover, if you have video in which extracting frames, save it in path_to_videos_folder according to their extensions.
 
-   FOLDER STRUCTURE:
+FOLDER STRUCTURE:
 
-   PROJECT
-      assigns  --> contain Sebe dataset (to be modified)
-      data     --> contain all the data (images and labels)
-      code     --> contain python scripts, model, configuration file 
-      Models   --> contain 3D stl and obj file 
-      runs     --> contain train model, statistics, weights, results, ...
+PROJECT
+   assigns  --> contain Sebe dataset (to be modified)
+   data     --> contain all the data (images and labels)
+   code     --> contain python scripts, model, configuration file 
+   Models   --> contain 3D stl and obj file 
+   runs     --> contain train model, statistics, weights, results, ...
 
-   This script create data and code folder with all the subsolder needed by the other python programs
-   assigns, models, folder must be add by us
-   runs folder it is created automatically by fine-tuning.py script
+This script create data and code folder with all the subsolder needed by the other python programs
+assigns, models, folder must be add by us
+runs folder it is created automatically by fine-tuning.py script
 
-   AFTER:
-   JSONtoYOLO script to take all the images and labels from Sebe dataset and rename/convert/move into data folder
-
-
-   author: Alberto Dal Bosco 
-   date: 22/11/2023
-   
-'''
+AFTER:
+JSONtoYOLO script to take all the images and labels from Sebe dataset and rename/convert/move into data folder
+"""
 
 
 import os
@@ -81,9 +75,12 @@ string15 = "FRAME FOLDER\nIn this folder will be saved all the .jpeg frame squar
 string16 = "\t\t\t\tNOW YOU HAVE TO ANNOTATE THE SQUARED IMAGES ALREADY FRAMED.\nGo to https://app.roboflow.com, \n--> Sign in\n--> Create new project (Object Detection) and create \n--> Add Classes \n--> Upload Images, in our case are in frame folder (click Save and Continue) \n--> Assign images to group component, if existent (click Assign button) \n--> Annotate Images (click Start Annotating) \n\t\tHere you have to annotate each image with the Bounding Box Tool selecting for each BB the correct class. \n\t\tRepeat this procedure for all the images non annotated. \n\t\tWhen finished, click on the 'back arrow' and click Add # images to Datasets selecting correct proportionality for Image Distribution \n\t\tIn conclusion, click Add Images \n--> Click on Projects in the roboflow main header and select current project \n--> Do not select any Preprocessing transformation (click Continue) \n--> Do not select any Augmentation for your image (click Continue) \n--> CLICK CREATE to create first version of your dataset \n--> Export Dataset selecting YOLOv8 Format and -download zip to computer- option (click Continue) \nGo to download folder and copy/move train, val, test folder of images and labels in corresponding train, val, test folder of your project (test does not have labels obviusly). \nNow it is time to augment this images and those already present in that folder (GO TO augmentation.py script) \n\t\t\t____________________     YOU CAN CLOSE THIS FILE!!        ____________________  "
 
 
-# function to create README.md given the path
 def create_readme(path, readme_content):
-   
+   """! function to create README.md given the path
+   @param path  The path of the readme file.
+   @param readme_content The content to save into the readme file.
+   @return  None
+   """
    # Scrivi il contenuto nel file README.txt
    readme_path = os.path.join(path, 'README.md')
    if os.path.isfile(readme_path):
@@ -93,8 +90,12 @@ def create_readme(path, readme_content):
          readme_file.write(readme_content)
 
 
-# function to create ANNOTATION_PROCEDURE.md given the path
 def create_ann_procedure(path, content):
+   """! function to create ANNOTATION_PROCEDURE.md given the path
+   @param path  The path of the readme file.
+   @param content The content to save into the file.
+   @return  None
+   """
    # Scrivi il contenuto nel file README.txt
    procedure_path = os.path.join(path, 'ANNOTATION_PROCEDURE.md')
    if os.path.isfile(procedure_path):

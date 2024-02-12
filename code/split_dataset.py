@@ -1,22 +1,16 @@
-'''
-    
-    PYTHON SCRIPT FOR SPLITTING DATASETS.
-    This python script moves the .jpeg images into the three sub-folder train, val, test in a given percentage
-   
-    
-    BEFORE COMPILING:
-    For the import library, are mandatory this commands:   (N.B.: macOS command line)
-        pip install moviepy
+"""
+@file split_dataset.py
+@brief This python script moves the .jpeg images into the three sub-folder train, val, test in a given percentage
+@date   13/12/2023
+@author Alberto Dal Bosco
+@section Notes
+BEFORE COMPILING:
+For the import library, are mandatory this commands:   (N.B.: macOS command line)
+    pip install moviepy
 
-    AFTER:  
-    augmentation.py to augment train and validation dataset
-    
-    
-    author: Alberto Dal Bosco 
-    date: 13/12/2023
-
-'''
-
+AFTER:  
+augmentation.py to augment train and validation dataset
+"""
 
 import os
 from moviepy.editor import *
@@ -56,9 +50,20 @@ percentage_val = 0.2
 percentage_test = 0.1
 
 
-
-# function to split images into the three subdirectory train, val and test.
 def split_images(images_directory, l_dir, train_directory, tl_dir, validation_directory, vl_dir, test_directory, testl_dir, x, y, z):
+    """! function to split images into the three subdirectory train, val and test.
+    @param images_directory path to images
+    @param l_dir path to labels
+    @param train_directory path to train folder of the images 
+    @param tl_dir path to train folder of the labels
+    @param validation_directory path to validation folder of the images
+    @param vl_dir path to validation folder of the labels
+    @param test_directory path to test folder of the images
+    @param testl_dir path to test folder of the labels
+    @param x percentage of image/labels in train
+    @param y percentage of image/labels in validation
+    @param z percentage of image/labels in test
+    """
     #Splitting of three sub-folder
     split = (x, y, z)
     
